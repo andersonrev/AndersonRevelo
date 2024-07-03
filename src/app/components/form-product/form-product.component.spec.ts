@@ -33,7 +33,7 @@ describe('FormProductComponent', () => {
     expect(form.contains('date_revision')).toBeTruthy();
   });
 
-  it('Should validate that the id entered is unique', () => {
+  xit('Should validate that the id entered is unique', () => {
 
   });
 
@@ -78,13 +78,21 @@ describe('FormProductComponent', () => {
   });
 
   it('should enabled the submit button when the form is valid', () => {
+
     const form = component.form;
+    const date = new Date();
+
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const dateString = `${date.getFullYear()}-${month}-${day}`
+    console.log('date', dateString);
+
     form.patchValue({
       id: '1234',
       name: 'test12',
       description: '1234567891011asdfadfsdf',
       logo: 'test.png',
-      date_release: '2023-01-01',
+      date_release: dateString,
       date_revision: '2024-01-01',
     });
 

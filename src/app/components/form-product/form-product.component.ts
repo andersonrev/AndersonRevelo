@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { dateNotLessThanCurrent } from './validators/date-validators.function';
 
 @Component({
   selector: 'app-form-product',
@@ -21,9 +22,7 @@ export class FormProductComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       logo: ['', [Validators.required]],
-      date_release: ['', [Validators.required],
-        // fecha debe ser igual o mauor a la fecha actual
-      ],
+      date_release: ['', [Validators.required, dateNotLessThanCurrent()]],
       date_revision: ['', [Validators.required,
         //se debe setear automaticamente 365 dias  al date_release
       ]],
@@ -63,4 +62,6 @@ export class FormProductComponent implements OnInit {
   }
 
 
+
 }
+
