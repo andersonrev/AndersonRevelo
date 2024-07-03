@@ -24,12 +24,19 @@ export class ProductHttpService {
   }
 
   createProduct(newProduct: ProductInterface){
-    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, newProduct);
+    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, {...newProduct, id: this.randomString(4)});
   }
 
   updateProduct(id: string, body: Omit<ProductInterface, 'id'>){
 
     return this.http.put<ResponseUpdateProductInterface>(`${this.urlBackendProducts}/${id}`, body);
+  }
+
+  randomString(length: number) {
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result = '';
+    for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
   }
 
 }

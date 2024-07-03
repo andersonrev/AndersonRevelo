@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FinancialProductsPageComponent } from './financial-products-page.component';
-import { ProductHttpService } from '../../services/product-http.service';
 import { Observable, of } from 'rxjs';
-import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.interface';
-import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 import { productsMock } from '../../constants/mock-products';
+import { ProductInterface } from '../../interfaces/product.interface';
+import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
+import { ProductHttpService } from '../../services/product-http.service';
+import { FinancialProductsPageComponent } from './financial-products-page.component';
 
 describe('FinancialProductsPageComponent', () => {
   let component: FinancialProductsPageComponent;
@@ -58,11 +58,29 @@ describe('FinancialProductsPageComponent', () => {
   });
 
   it('should call updateProduct, updateProduct()', () => {
-    const respUpdateProduct = spyOn(mockedProductHttpService, 'updateProduct');
-    respUpdateProduct.and.returnValue(of({message: '', data: mockUpdateProduct}));
+    const spyUpdateProduct = spyOn(mockedProductHttpService, 'updateProduct');
+    spyUpdateProduct.and.returnValue(of({message: '', data: mockUpdateProduct}));
     component.updateProduct(mockUpdateProduct);
     expect(mockedProductHttpService.updateProduct).toHaveBeenCalled();
   });
+
+
+  it('should call createProduct, createProduct()', () => {
+    const spyCreateProduct = spyOn(mockedProductHttpService, 'createProduct');
+    spyCreateProduct.and.returnValue(of({message: '', data: mockUpdateProduct}));
+    component.createProduct(mockUpdateProduct);
+    expect(mockedProductHttpService.createProduct).toHaveBeenCalled();
+  });
+
+  // it('should call deleteProduct, delete()', () => {
+  //   const spyCreateProduct = spyOn(mockedProductHttpService, 'createProduct');
+  //   spyCreateProduct.and.returnValue(of({message: '', data: mockUpdateProduct}));
+  //   component.createProduct(mockUpdateProduct);
+  //   expect(mockedProductHttpService.createProduct).toHaveBeenCalled();
+  // });
+
+
+
 
 
 });

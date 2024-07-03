@@ -5,7 +5,7 @@ import { HeaderTableComponent } from '../../components/header-table/header-table
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product-http.service';
-import { ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
+import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 
 @Component({
   selector: 'app-financial-products-page',
@@ -50,5 +50,17 @@ export class FinancialProductsPageComponent implements OnInit {
   deleteProduct(idProduct: string) {
     console.log('esto vamos a eliminar', idProduct);
   }
+
+  createProduct(product: ProductInterface) {
+    this.productoHttpService.createProduct(product).subscribe({
+      next: (resp: ResponseCreateProductInterface) => {
+        console.log(resp);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+  }
+
 
 }
