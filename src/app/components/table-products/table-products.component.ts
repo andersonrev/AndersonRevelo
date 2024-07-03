@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { DropdownCustomComponent } from '../../shared/dropdown-custom/dropdown-custom.component';
-import { FormProductComponent } from '../form-product/form-product.component';
 
 @Component({
   selector: 'app-table-products',
   standalone: true,
-  imports: [CommonModule, DropdownCustomComponent, FormProductComponent],
+  imports: [CommonModule, DropdownCustomComponent, DatePipe],
   templateUrl: './table-products.component.html',
   styleUrl: './table-products.component.scss'
 })
@@ -22,10 +21,6 @@ export class TableProductsComponent {
 
   @Output()
   eventDeleteProduct = new EventEmitter<string>();
-
-
-
-  // itemsDropdown: string[] = ['EDITAR', 'ELIMINAR'];
 
   itemsDropdown: { label: string, command: (data: any) => void }[] = [
     {

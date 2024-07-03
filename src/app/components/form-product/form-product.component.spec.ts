@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormProductComponent } from './form-product.component';
-import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { formatDateWithYYYYMMDD } from '../../utilities/format-date.function';
+import { FormProductComponent } from './form-product.component';
 
 describe('FormProductComponent', () => {
   let component: FormProductComponent;
@@ -25,18 +25,14 @@ describe('FormProductComponent', () => {
 
   it('Should create a form with ID, NOMBRE, DESCRIPCION, LOGO, FECHA LIBERACION, FECHA REVISION', () => {
     const form = component.form;
-    expect(form.contains('id')).toBeTruthy();
-    expect(form.contains('name')).toBeTruthy();
-    expect(form.contains('description')).toBeTruthy();
-    expect(form.contains('logo')).toBeTruthy();
-    expect(form.contains('date_release')).toBeTruthy();
-    expect(form.contains('date_revision')).toBeTruthy();
+
+    expect(form.get('id')).toBeTruthy();
+    expect(form.get('name')).toBeTruthy();
+    expect(form.get('description')).toBeTruthy();
+    expect(form.get('logo')).toBeTruthy();
+    expect(form.get('date_release')).toBeTruthy();
+    expect(form.get('date_revision')).toBeTruthy();
   });
-
-  xit('Should validate that the id entered is unique', () => {
-
-  });
-
 
   it('should be mandatory the fields ID, NOMBRE, DESCRIPCION, LOGO, FECHA LIBERACION, FECHA REVISION', () => {
     const form = component.form;
@@ -82,10 +78,7 @@ describe('FormProductComponent', () => {
     const form = component.form;
     const date = new Date();
 
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    const dateString = `${date.getFullYear()}-${month}-${day}`
-    console.log('date', dateString);
+    const dateString = formatDateWithYYYYMMDD(date);
 
     form.patchValue({
       id: '1234',
@@ -123,10 +116,36 @@ describe('FormProductComponent', () => {
       delete mockFormReset.id;
       expect(component.form.value).toEqual({ ...mockFormReset, id: component.form.get('id') });
     } else {
-      expect(component.form.value).toEqual(mockFormReset);
+      expect(component.form.getRawValue()).toEqual(mockFormReset);
     }
     expect(component.form.invalid).toBeTrue();
 
+  });
+
+  it('should send {date_revision: "" } when date is less than today', () => {
+
+    const date = formatDateWithYYYYMMDD(new Date('2023-01-01'));
+    component.form.patchValue({ date_release: date });
+
+    const spyForm = spyOn(component.form, 'patchValue');
+
+    component.setDateRevision();
+
+    expect(spyForm).toHaveBeenCalledWith({ date_revision: '' });
+  });
+
+  it('should send {date_revision: "correct date" } when date is correct', () => {
+
+    const date = formatDateWithYYYYMMDD(new Date());
+    component.form.patchValue({ date_release: date });
+
+    const spyForm = spyOn(component.form, 'patchValue');
+
+    component.setDateRevision();
+
+    const dateSucces = component.addDaystoDate(component.form.get('date_release')?.value, 365);
+
+    expect(spyForm).toHaveBeenCalledWith({ date_revision: formatDateWithYYYYMMDD(dateSucces) });
   });
 
 });

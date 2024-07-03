@@ -13,9 +13,9 @@
         <input type="text" id="logo" formControlName="logo">
 
         <label for="date_release">Fecha Liberación</label>
-        <input type="date" id="date_release" formControlName="date_release">
+        <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()">
 
-        <label for="date_revision"></label>
+        <label for="date_revision">Fecha </label>
         <input type="date" id="date_revision" formControlName="date_revision">
 
         <button class="btn-submit" type="submit" [disabled]="form.invalid">

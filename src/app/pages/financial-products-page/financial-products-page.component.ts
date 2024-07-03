@@ -1,16 +1,15 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HeaderTableComponent } from '../../components/header-table/header-table.component';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product-http.service';
-import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 
 @Component({
   selector: 'app-financial-products-page',
   standalone: true,
-  imports: [CommonModule, TableProductsComponent, HeaderTableComponent],
+  imports: [CommonModule, TableProductsComponent, AsyncPipe],
   templateUrl: './financial-products-page.component.html',
   styleUrl: './financial-products-page.component.scss'
 })
@@ -18,6 +17,9 @@ export class FinancialProductsPageComponent implements OnInit {
 
 
   private productoHttpService = inject(ProductHttpService);
+
+  private router = inject(Router);
+
   products$: Observable<ProductInterface[]> = new Observable();
 
   ngOnInit(): void {
@@ -28,39 +30,19 @@ export class FinancialProductsPageComponent implements OnInit {
     this.products$ = this.productoHttpService.getProducts();
   }
 
-  updateProduct(product: ProductInterface) {
-    const productBody: Omit<ProductInterface, 'id'> = {
-      date_release: product.date_release,
-      date_revision: product.date_revision,
-      description: product.description,
-      logo: product.logo,
-      name: product.name
+  goToCreateUpdatePage(idProduct?: string) {
+    if (idProduct) {
+      this.router.navigate(['financial-products', 'update-product', idProduct]);
+    } else {
+      this.router.navigate(['financial-products', 'create-product']);
     }
-    console.log('esto vamos a enivar al service', product);
-    this.productoHttpService.updateProduct(product.id, productBody).subscribe({
-      next: (resp: ResponseUpdateProductInterface) => {
-        console.log(resp);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
+
 
   deleteProduct(idProduct: string) {
     console.log('esto vamos a eliminar', idProduct);
   }
 
-  createProduct(product: ProductInterface) {
-    this.productoHttpService.createProduct(product).subscribe({
-      next: (resp: ResponseCreateProductInterface) => {
-        console.log(resp);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    })
-  }
 
 
 }

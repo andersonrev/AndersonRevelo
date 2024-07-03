@@ -1,3 +1,7 @@
 <p>financial-products-page works!</p>
-<app-header-table></app-header-table>
-<app-table-products [products]="products$ | async" (eventDeleteProduct)="deleteProduct($event)" (eventUpdateProduct)="updateProduct($event)"></app-table-products>
+<div class="search">
+    <input type="text" placeholder="Search">
+    <button (click)="goToCreateUpdatePage()">Agregar</button>
+</div>
+<app-table-products [products]="products$ | async" (eventDeleteProduct)="deleteProduct($event)"
+    (eventUpdateProduct)="goToCreateUpdatePage($event.id)"></app-table-products>

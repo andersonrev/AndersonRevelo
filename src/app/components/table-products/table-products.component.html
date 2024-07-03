@@ -15,8 +15,8 @@
             <td>{{product.logo}}</td>
             <td>{{product.name}}</td>
             <td>{{product.description}}</td>
-            <td>{{product.date_release}}</td>
-            <td>{{product.date_revision}}</td>
+            <td>{{product.date_release | date}}</td>
+            <td>{{product.date_revision | date}}</td>
             <td>
                 <app-dropdown-custom [items]="itemsDropdown" [data]="product"></app-dropdown-custom>
             </td>
@@ -26,7 +26,5 @@
         <p id="emptyMessage">There are no products.</p>
         }
     </tbody>
-    <tfoot>5 en total</tfoot>
+    <tfoot>{{products?.length}}</tfoot>
 </table>
-
-<app-form-product></app-form-product>
