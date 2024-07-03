@@ -1,3 +1,3 @@
 export const environment = {
-    URL_BACKEND: 'localhost:3002'
+    URL_BACKEND: 'http://localhost:3002'
 };

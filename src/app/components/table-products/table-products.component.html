@@ -10,14 +10,21 @@
         </tr>
     </thead>
     <tbody>
+        @for (product of products; track product.id) {
         <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
+            <td>{{product.logo}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.date_release}}</td>
+            <td>{{product.date_revision}}</td>
+            <td>
+                icono de tres punticos
+            </td>
         </tr>
+
+        } @empty {
+        <p id="emptyMessage">There are no products.</p>
+        }
     </tbody>
     <tfoot>5 en total</tfoot>
 </table>

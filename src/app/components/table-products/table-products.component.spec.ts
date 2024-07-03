@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableProductsComponent } from './table-products.component';
+import { By } from '@angular/platform-browser';
 
 describe('TableProductsComponent', () => {
   let component: TableProductsComponent;
@@ -20,4 +21,12 @@ describe('TableProductsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show empty message', () => {
+    component.products = [];
+    expect(component.products.length).toEqual(0);
+    fixture.detectChanges();
+    const pEmpty = fixture.debugElement.query(By.css('#emptyMessage')).nativeElement;
+    expect(pEmpty.innerHTML).toContain('There are no products.');
+  })
 });

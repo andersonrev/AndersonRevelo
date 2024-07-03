@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { ProductInterface } from '../interfaces/product.interface';
 import { Observable, map } from 'rxjs';
+import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../interfaces/response-create-product.interface';
 
 
 type respProducto = { data: ProductInterface[] }
@@ -12,13 +13,23 @@ type respProducto = { data: ProductInterface[] }
 })
 export class ProductHttpService {
 
-  private urlBackend = environment.URL_BACKEND;
+  private urlBackendProducts = environment.URL_BACKEND + '/bp/products';
   constructor(private http: HttpClient) {
   }
   getProducts(): Observable<ProductInterface[]> {
-    return this.http.get<respProducto>(`${this.urlBackend}/db/products`).pipe(
+    return this.http.get<respProducto>(`${this.urlBackendProducts}`).pipe(
       map(
         (resp: respProducto) => resp.data
       ));
   }
+
+  createProduct(newProduct: ProductInterface){
+    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, newProduct);
+  }
+
+  updateProduct(id: string, body: Omit<ProductInterface, 'id'>){
+
+    return this.http.put<ResponseUpdateProductInterface>(`${this.urlBackendProducts}/${id}`, body);
+  }
+
 }

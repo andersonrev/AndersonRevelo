@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ProductInterface } from '../interfaces/product.interface';
 import { ProductHttpService } from './product-http.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('ProductHttpService', () => {
   let service: ProductHttpService;
@@ -15,8 +14,8 @@ describe('ProductHttpService', () => {
     name: "Nombre producto",
     description: "Descriocion",
     logo: "asdests.png",
-    data_release: "2020-04-30T00:00:00.000",
-    data_revision:"2020-04-30T00:00:00.000"
+    date_release: new Date("2023-01-01"),
+    date_revision: new Date("2024-01-01")
 
   }
 
@@ -33,9 +32,9 @@ describe('ProductHttpService', () => {
     expect(service).toBeTruthy();
   });
 
-  xit('deberia ser llamada la funcion para traer los productos', () => {
-    const respuestaTraer = spyOn(service, 'getProducts')
-
+  it('deberia ser llamada la funcion para traer los productos', () => {
+    const respuestaTraer = spyOn(service, 'getProducts');
+    service.getProducts();
     expect(respuestaTraer).toHaveBeenCalled();
 
 

@@ -3,6 +3,6 @@ export interface ProductInterface {
     name: string
     description: string
     logo: string
-    data_release: string
-    data_revision: string
+    date_release: Date
+    date_revision: Date
 }
