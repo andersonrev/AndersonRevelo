@@ -17,7 +17,11 @@ export class TableProductsComponent {
   products: ProductInterface[] | null = [];
 
   @Output()
-  accion = new EventEmitter<any>();
+  eventUpdateProduct = new EventEmitter<ProductInterface>();
+
+  @Output()
+  eventDeleteProduct = new EventEmitter<string>();
+
 
 
   // itemsDropdown: string[] = ['EDITAR', 'ELIMINAR'];
@@ -40,11 +44,14 @@ export class TableProductsComponent {
 
 
   editProduct(product: ProductInterface) {
-     console.log('edita el producto', product)
+     console.log('edita el producto', product);
+     this.eventUpdateProduct.emit(product);
+
   }
 
   deleteProduct(productID: string) {
     console.log('eliminar el producto', productID);
+     this.eventDeleteProduct.emit(productID);
   }
 
 }

@@ -6,3 +6,5 @@ export interface ProductInterface {
     date_release: Date
     date_revision: Date
 }
+
+export type bodyProductUpdate = Omit<ProductInterface, 'id' >;
