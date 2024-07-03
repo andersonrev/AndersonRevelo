@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { DropdownCustomComponent } from '../../shared/dropdown-custom/dropdown-custom.component';
+import { FormProductComponent } from '../form-product/form-product.component';
 
 @Component({
   selector: 'app-table-products',
   standalone: true,
-  imports: [CommonModule, DropdownCustomComponent],
+  imports: [CommonModule, DropdownCustomComponent, FormProductComponent],
   templateUrl: './table-products.component.html',
   styleUrl: './table-products.component.scss'
 })

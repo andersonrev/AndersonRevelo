@@ -1,19 +1,30 @@
 <div class="form">
-    <label for="id">ID</label>
-    <input type="text" id="id">
+    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label for="id">ID</label>
+        <input type="text" id="id" formControlName="id">
 
-    <label for="name">Nombre</label>
-    <input type="text" id="name">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" formControlName="name">
 
-    <label for="description">Descripción</label>
-    <input type="text" id="description">
+        <label for="description">Descripción</label>
+        <input type="text" id="description" formControlName="description">
 
-    <label for="logo">Logo</label>
-    <input type="text" id="logo">
+        <label for="logo">Logo</label>
+        <input type="text" id="logo" formControlName="logo">
 
-    <label for="date_release">Fecha Liberación</label>
-    <input type="text" id="date_release">
+        <label for="date_release">Fecha Liberación</label>
+        <input type="date" id="date_release" formControlName="date_release">
 
-    <label for="date_revision"></label>
-    <input type="text" id="date_revision">
+        <label for="date_revision"></label>
+        <input type="date" id="date_revision" formControlName="date_revision">
+
+        <button class="btn-submit" type="submit" [disabled]="form.invalid">
+            Enviar
+        </button>
+
+        <button class="btn-reset" [disabled]="form.invalid" (click)="onReset()">
+            Reiniciar
+        </button>
+
+    </form>
 </div>

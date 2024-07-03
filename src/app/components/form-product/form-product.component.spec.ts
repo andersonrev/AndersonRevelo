@@ -25,7 +25,6 @@ describe('FormProductComponent', () => {
 
   it('Should create a form with ID, NOMBRE, DESCRIPCION, LOGO, FECHA LIBERACION, FECHA REVISION', () => {
     const form = component.form;
-    debugger;
     expect(form.contains('id')).toBeTruthy();
     expect(form.contains('name')).toBeTruthy();
     expect(form.contains('description')).toBeTruthy();
@@ -81,13 +80,15 @@ describe('FormProductComponent', () => {
   it('should enabled the submit button when the form is valid', () => {
     const form = component.form;
     form.patchValue({
-      id: '123',
-      name: 'test',
-      description: 'test',
+      id: '1234',
+      name: 'test12',
+      description: '1234567891011asdfadfsdf',
       logo: 'test.png',
       date_release: '2023-01-01',
       date_revision: '2024-01-01',
     });
+
+    fixture.detectChanges();
     expect(form.valid).toBeTrue();
     const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('.btn-submit')).nativeElement;
     expect(buttonSubmit.disabled).toBeFalse();
