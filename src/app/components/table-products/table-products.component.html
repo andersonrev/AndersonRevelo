@@ -18,7 +18,15 @@
             <td>{{product.date_release}}</td>
             <td>{{product.date_revision}}</td>
             <td>
-                icono de tres punticos
+                <!-- <div class="dropdown">
+                    <button class="dropbtn">Acciones</button>
+                    <div class="dropdown-content">
+                        <a (click)="editProduct(product)">Editar</a>
+                        <a (click)="deleteProduct(product.id)">Eliminar</a>
+                    </div>
+                </div> -->
+
+                <app-dropdown-custom [items]="itemsDropdown" [data]="product"></app-dropdown-custom>
             </td>
         </tr>
 

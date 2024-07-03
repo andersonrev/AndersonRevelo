@@ -1,0 +1,11 @@
+<div class="dropdown">
+    <button class="dropdown-button" (click)="showOptions()">
+        ...
+    </button>
+
+    <div class="dropdown-content">
+        @for (item of items; track $index) {
+            <a (click)="emitEvent($index)">{{item.label}}</a>
+        }
+    </div>
+</div>
