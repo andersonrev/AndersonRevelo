@@ -69,10 +69,16 @@ export class FinancialProductsPageComponent implements OnInit {
       const productosFiltered = this.productoHttpService.getProductsStore.filter(product =>
         product.name.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
       );
-      this.products$.next(productosFiltered);
+      this.products$.next(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
       this.totalProducts = productosFiltered.length;
+      this.currentPage = 1;
+      this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
+
     } else {
-      this.products$.next(this.productoHttpService.getProductsStore)
+      this.products$.next(this.productoHttpService.getProductsStore.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      this.totalProducts = this.productoHttpService.getProductsStore.length;
+      this.currentPage = 1;
+      this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
     }
   }
 
@@ -80,6 +86,7 @@ export class FinancialProductsPageComponent implements OnInit {
     // si el amount es mayor al numero de registros no hacer nada
     // casoo contrario
     // mostrar solo el numero de registros de amount
+    this.AMOUNT_RECORD_TO_SHOW = amount;
     if (amount <= this.totalProducts) {
       const amountOfProductsShow = this.productoHttpService.getProductsStore.slice(0, amount);
       this.products$.next(amountOfProductsShow);
@@ -98,13 +105,16 @@ export class FinancialProductsPageComponent implements OnInit {
     // tambien tengo que saber en que pagina estoy para segun eso hacer el slice
     // 
 
-    if (this.currentPage < this.totalPages && this.currentPage!==this.totalPages) {
+    if (this.currentPage < this.totalPages && this.currentPage !== this.totalPages) {
+
 
       const productsToShow = this.productoHttpService.getProductsStore.slice(this.currentPage * amount, this.currentPage * amount + amount);
 
       this.products$.next(productsToShow);
 
       this.currentPage++;
+
+
 
     }
 
