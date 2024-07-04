@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductHttpService } from '../../services/product-http.service';
+import { ProductHttpService } from '../../services/product/product-http.service';
 import { FinancialProductsPageComponent } from './financial-products-page.component';
 import { Observable, of } from 'rxjs';
 import { productsMock } from '../../constants/mock-products';

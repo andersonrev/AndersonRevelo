@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
-import { ProductInterface } from '../interfaces/product.interface';
+import { environment } from '../../../environments/environment.development';
+import { ProductInterface } from '../../interfaces/product.interface';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../interfaces/response-create-product.interface';
+import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 
 
 type respProducto = { data: ProductInterface[] }
@@ -13,9 +13,6 @@ type respProducto = { data: ProductInterface[] }
 })
 export class ProductHttpService {
 
-
-  private products = new BehaviorSubject<ProductInterface[]>([]);
-
   private productsStore: ProductInterface[] = [];
 
   private urlBackendProducts = environment.URL_BACKEND + '/bp/products';
@@ -23,20 +20,8 @@ export class ProductHttpService {
   constructor(private http: HttpClient) {
   }
 
-  get getProductsValue() {
-    return this.products.asObservable();
-  }
-
   get getProductsStore() {
     return this.productsStore;
-  }
-
-  storeProducts(products: ProductInterface[]) {
-    this.productsStore = [...products];
-  }
-
-  set setProducts(products: ProductInterface[]) {
-    this.products.next(products);
   }
 
   getProducts(): Observable<ProductInterface[]> {
@@ -44,8 +29,7 @@ export class ProductHttpService {
       map(
         (resp: respProducto) => resp.data
       ),
-      tap((products) => this.storeProducts(products))
-    );
+      tap((products) => this.productsStore = products));
   }
 
   createProduct(newProduct: ProductInterface) {
@@ -55,6 +39,11 @@ export class ProductHttpService {
   updateProduct(id: string, body: Omit<ProductInterface, 'id'>) {
 
     return this.http.put<ResponseUpdateProductInterface>(`${this.urlBackendProducts}/${id}`, body);
+  }
+
+  verificationId(id:string): Observable<boolean>{
+    console.log('id', id);
+    return this.http.get<boolean>(`${this.urlBackendProducts}/verification/${id}`);
   }
 
   randomString(length: number) {

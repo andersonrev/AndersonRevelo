@@ -16,6 +16,9 @@ export class TableProductsComponent {
   @Input()
   products: ProductInterface[] | null = [];
 
+  @Input()
+  totalRecords = 0;
+
   @Output()
   eventUpdateProduct = new EventEmitter<ProductInterface>();
 
@@ -40,14 +43,15 @@ export class TableProductsComponent {
 
 
   editProduct(product: ProductInterface) {
-     console.log('edita el producto', product);
-     this.eventUpdateProduct.emit(product);
+    console.log('edita el producto', product);
+    this.eventUpdateProduct.emit(product);
 
   }
 
   deleteProduct(productID: string) {
     console.log('eliminar el producto', productID);
-     this.eventDeleteProduct.emit(productID);
+    this.eventDeleteProduct.emit(productID);
   }
+
 
 }

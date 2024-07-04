@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormProductComponent } from '../../components/form-product/form-product.component';
 import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
-import { ProductHttpService } from '../../services/product-http.service';
+import { ProductHttpService } from '../../services/product/product-http.service';
 
 @Component({
   selector: 'app-create-update-product-page',

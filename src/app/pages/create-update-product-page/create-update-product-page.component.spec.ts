@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { productsMock } from '../../constants/mock-products';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
-import { ProductHttpService } from '../../services/product-http.service';
+import { ProductHttpService } from '../../services/product/product-http.service';
 import { ActivatedRoute } from '@angular/router';
 
 describe('CreateUpdateProductPageComponent', () => {

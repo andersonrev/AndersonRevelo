@@ -5,16 +5,46 @@
 
         <label for="name">Nombre</label>
         <input type="text" id="name" formControlName="name">
+        @if (errorMessagesId.length>0) {
+        @for (message of errorMessagesId; track $index) {
+        <p style="color: red; font-size: 12px">
+            {{message}}
+        </p>
+        }
+        }
 
         <label for="description">Descripción</label>
         <input type="text" id="description" formControlName="description">
 
+        @if (errorMessagesName.length>0) {
+        @for (message of errorMessagesName; track $index) {
+        <p style="color: red; font-size: 12px">
+            {{message}}
+        </p>
+        }
+        }
+
         <label for="logo">Logo</label>
         <input type="text" id="logo" formControlName="logo">
+
+        @if (errorMessagesLogo.length>0) {
+        @for (message of errorMessagesLogo; track $index) {
+        <p style="color: red; font-size: 12px">
+            {{message}}
+        </p>
+        }
+        }
 
         <label for="date_release">Fecha Liberación</label>
         <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()">
 
+        @if (errorMessagesDateRelease.length>0) {
+        @for (message of errorMessagesDateRelease; track $index) {
+        <p style="color: red; font-size: 12px">
+            {{message}}
+        </p>
+        }
+        }
         <label for="date_revision">Fecha </label>
         <input type="date" id="date_revision" formControlName="date_revision">
 
@@ -25,6 +55,8 @@
         <button class="btn-reset" [disabled]="form.invalid" (click)="onReset()">
             Reiniciar
         </button>
+
+        <button (click)="verAlgo()" type="button">verEstado</button>
 
     </form>
 </div>
