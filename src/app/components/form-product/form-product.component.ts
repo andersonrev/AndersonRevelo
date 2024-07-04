@@ -70,6 +70,7 @@ export class FormProductComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEditing && this.productEditing) {
+
       this.form.patchValue({
         id: this.productEditing.id,
         name: this.productEditing.name,
@@ -185,6 +186,7 @@ export class FormProductComponent implements OnInit {
   }
 
   setMessageErrorOnControl(control: AbstractControl) {
+    console.log('validando')
     let errorMessages: string[] = [];
     if ((control.dirty || control.touched) && control.errors) {
       errorMessages = Object.keys(control.errors).map(keyError => {

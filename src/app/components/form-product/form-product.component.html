@@ -1,12 +1,23 @@
 <div class="form">
     <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <label for="id">ID</label>
-        <input type="text" id="id" formControlName="id">
+        <div>
+
+            <label for="id">ID</label>
+            <input type="text" id="id" formControlName="id">
+            @if (errorMessagesId.length>0) {
+            @for (message of errorMessagesId; track $index) {
+            <p style="color: red; font-size: 12px">
+                {{message}}
+            </p>
+            }
+            }
+
+        </div>
 
         <label for="name">Nombre</label>
         <input type="text" id="name" formControlName="name">
-        @if (errorMessagesId.length>0) {
-        @for (message of errorMessagesId; track $index) {
+        @if (errorMessagesName.length>0) {
+        @for (message of errorMessagesName; track $index) {
         <p style="color: red; font-size: 12px">
             {{message}}
         </p>
@@ -16,8 +27,8 @@
         <label for="description">Descripción</label>
         <input type="text" id="description" formControlName="description">
 
-        @if (errorMessagesName.length>0) {
-        @for (message of errorMessagesName; track $index) {
+        @if (errorMessagesDescription.length>0) {
+        @for (message of errorMessagesDescription; track $index) {
         <p style="color: red; font-size: 12px">
             {{message}}
         </p>
@@ -52,7 +63,7 @@
             Enviar
         </button>
 
-        <button class="btn-reset" [disabled]="form.invalid" (click)="onReset()">
+        <button class="btn-reset" type="button" (click)="onReset()">
             Reiniciar
         </button>
 

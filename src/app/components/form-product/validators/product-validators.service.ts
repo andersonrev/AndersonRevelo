@@ -11,6 +11,9 @@ export class ProductValidatorsService implements AsyncValidator  {
   constructor(private productHttpService: ProductHttpService) { }
 
   validate(control: AbstractControl<any, any>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+
+    if(!control.value) return of(null);
+
     return this.productHttpService.verificationId(control.value).pipe(
       map((existId)=> (existId? {invalidId: true} : null)),
       catchError(() => of(null))

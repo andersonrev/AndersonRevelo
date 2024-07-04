@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormProductComponent } from '../../components/form-product/form-product.component';
 import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
+import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
 
 @Component({
   selector: 'app-create-update-product-page',
@@ -20,6 +21,9 @@ export class CreateUpdateProductPageComponent implements OnInit {
 
   productEditing: ProductInterface | undefined = undefined;
 
+
+  notificationService = inject(NotificationsToastService);
+  
   constructor(private productoHttpService: ProductHttpService) {
 
   }
@@ -43,6 +47,7 @@ export class CreateUpdateProductPageComponent implements OnInit {
       this.productoHttpService.updateProduct(this.productEditing.id, body).subscribe({
         next: (resp: ResponseUpdateProductInterface) => {
           console.log(resp);
+          
         },
         error: (e) => {
           console.error(e);
@@ -54,6 +59,7 @@ export class CreateUpdateProductPageComponent implements OnInit {
       this.productoHttpService.createProduct(body as ProductInterface).subscribe({
         next: (resp: ResponseUpdateProductInterface) => {
           console.log(resp);
+          this.notificationService.showToast('Creado correctamente');
         },
         error: (e) => {
           console.error(e);
