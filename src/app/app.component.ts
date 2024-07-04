@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
   showToaster() {
     this.container.createEmbeddedView(this.toats, this);
-    setTimeout(() => { this.container.clear() }, 1500)
+    // setTimeout(() => { this.container.clear() }, 1500)
   }
 
 

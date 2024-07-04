@@ -1,11 +1,15 @@
 <div class="dropdown">
-    <button class="dropdown-button" (click)="showOptions()">
-        ...
+    <button class="dropdown-button">
+        <span style="writing-mode: vertical-lr;
+    transform: rotate(180deg); width: 7px;">
+            ...
+        </span>
     </button>
 
     <div class="dropdown-content">
         @for (item of items; track $index) {
-            <a (click)="emitEvent($index)">{{item.label}}</a>
+        <a (click)="emitEvent($index)">{{item.label}}</a>
         }
     </div>
+
 </div>

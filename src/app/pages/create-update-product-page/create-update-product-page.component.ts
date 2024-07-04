@@ -23,7 +23,7 @@ export class CreateUpdateProductPageComponent implements OnInit {
 
 
   notificationService = inject(NotificationsToastService);
-  
+
   constructor(private productoHttpService: ProductHttpService) {
 
   }
@@ -36,8 +36,8 @@ export class CreateUpdateProductPageComponent implements OnInit {
     }
   }
 
-  setFormWithData(product: ProductInterface){
-    
+  setFormWithData(product: ProductInterface) {
+
   }
 
 
@@ -47,7 +47,7 @@ export class CreateUpdateProductPageComponent implements OnInit {
       this.productoHttpService.updateProduct(this.productEditing.id, body).subscribe({
         next: (resp: ResponseUpdateProductInterface) => {
           console.log(resp);
-          
+
         },
         error: (e) => {
           console.error(e);
@@ -99,6 +99,9 @@ export class CreateUpdateProductPageComponent implements OnInit {
         console.error(error);
       }
     });
+  }
+  abrirToast() {
+    this.notificationService.showToast('algo como esto se debe ver bien');
   }
 
 

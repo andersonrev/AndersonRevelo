@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { productsMock } from '../../constants/mock-products';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('FinancialProductsPageComponent', () => {
   let component: FinancialProductsPageComponent;
@@ -23,7 +24,7 @@ describe('FinancialProductsPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FinancialProductsPageComponent],
-      providers: [{ provide: ProductHttpService, useValue: mockedProductHttpService }]
+      providers: [{ provide: ProductHttpService, useValue: mockedProductHttpService }, provideHttpClientTesting]
 
     })
       .compileComponents();

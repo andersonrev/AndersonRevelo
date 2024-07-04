@@ -1,11 +1,22 @@
-<div class="form">
-    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div>
-
-            <label for="id">ID</label>
-            <input type="text" id="id" formControlName="id">
+<div >
+    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()" class="form" id="form-product">
+        <div class="input-item">
+            <label for="id" class="form-label">ID</label>
+            <input type="text" id="id" formControlName="id" [ngClass]="errorMessagesId.length > 0 ? 'wrong-input': ''">
             @if (errorMessagesId.length>0) {
             @for (message of errorMessagesId; track $index) {
+            <p style="color: red; font-size: 12px">
+                {{message}}
+            </p>
+            }
+            }
+        </div>
+
+        <div class="input-item">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" formControlName="name" [ngClass]="errorMessagesName.length > 0 ? 'wrong-input': ''">
+            @if (errorMessagesName.length>0) {
+            @for (message of errorMessagesName; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>
@@ -14,60 +25,71 @@
 
         </div>
 
-        <label for="name">Nombre</label>
-        <input type="text" id="name" formControlName="name">
-        @if (errorMessagesName.length>0) {
-        @for (message of errorMessagesName; track $index) {
-        <p style="color: red; font-size: 12px">
-            {{message}}
-        </p>
-        }
-        }
+        <div class="input-item">
 
-        <label for="description">Descripción</label>
-        <input type="text" id="description" formControlName="description">
+            <label for="description">Descripción</label>
 
-        @if (errorMessagesDescription.length>0) {
-        @for (message of errorMessagesDescription; track $index) {
-        <p style="color: red; font-size: 12px">
-            {{message}}
-        </p>
-        }
-        }
+            <input type="text" id="description" formControlName="description" [ngClass]="errorMessagesDescription.length > 0 ? 'wrong-input': ''">
 
-        <label for="logo">Logo</label>
-        <input type="text" id="logo" formControlName="logo">
+            @if (errorMessagesDescription.length>0) {
+            @for (message of errorMessagesDescription; track $index) {
+            <p style="color: red; font-size: 12px">
+                {{message}}
+            </p>
+            }
+            }
 
-        @if (errorMessagesLogo.length>0) {
-        @for (message of errorMessagesLogo; track $index) {
-        <p style="color: red; font-size: 12px">
-            {{message}}
-        </p>
-        }
-        }
 
-        <label for="date_release">Fecha Liberación</label>
-        <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()">
+        </div>
 
-        @if (errorMessagesDateRelease.length>0) {
-        @for (message of errorMessagesDateRelease; track $index) {
-        <p style="color: red; font-size: 12px">
-            {{message}}
-        </p>
-        }
-        }
-        <label for="date_revision">Fecha </label>
-        <input type="date" id="date_revision" formControlName="date_revision">
+        <div class="input-item">
 
-        <button class="btn-submit" type="submit" [disabled]="form.invalid">
-            Enviar
-        </button>
+            <label for="logo">Logo</label>
+            <input type="text" id="logo" formControlName="logo" [ngClass]="errorMessagesLogo.length > 0 ? 'wrong-input': ''">
 
-        <button class="btn-reset" type="button" (click)="onReset()">
-            Reiniciar
-        </button>
+            @if (errorMessagesLogo.length>0) {
+            @for (message of errorMessagesLogo; track $index) {
+            <p style="color: red; font-size: 12px">
+                {{message}}
+            </p>
+            }
+            }
 
-        <button (click)="verAlgo()" type="button">verEstado</button>
+        </div>
+        <div class="input-item">
+            <label for="date_release">Fecha Liberación</label>
+            <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()" [ngClass]="errorMessagesDateRelease.length > 0 ? 'wrong-input': ''">
 
+            @if (errorMessagesDateRelease.length>0) {
+            @for (message of errorMessagesDateRelease; track $index) {
+            <p style="color: red; font-size: 12px">
+                {{message}}
+            </p>
+            }
+            }
+        </div>
+
+        <div class="input-item">
+            <label for="date_revision">Fecha Revisión</label>
+            <input type="date" id="date_revision" formControlName="date_revision">
+        </div>
+
+        <div class="input-item">
+
+            <button class="btn-submit" type="submit" [disabled]="form.invalid">
+                Enviar
+            </button>
+        </div>
+
+        <div class="input-item">
+
+            <button class="btn-reset" type="button" (click)="onReset()">
+                Reiniciar
+            </button>
+
+        </div>
     </form>
+
 </div>
+
+<button (click)="verAlgo()" type="button">verEstado</button>

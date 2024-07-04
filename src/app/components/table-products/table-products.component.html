@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-bordered table-striped table-responsive-stack">
     <thead>
         <tr>
             <th>Logo</th>
@@ -12,11 +12,15 @@
     <tbody>
         @for (product of products; track product.id) {
         <tr>
-            <td>{{product.logo}}</td>
+            <td>
+                <!-- <img [src]="product.logo | safeImage" alt="logo">  -->
+                <img src="assets/question.svg" alt="logo" width="50px"> 
+
+            </td>
             <td>{{product.name}}</td>
             <td>{{product.description}}</td>
-            <td>{{product.date_release | date}}</td>
-            <td>{{product.date_revision | date}}</td>
+            <td>{{product.date_release | date: 'dd/MM/yyyy'}}</td>
+            <td>{{product.date_revision | date: 'dd/MM/yyyy'}}</td>
             <td>
                 <app-dropdown-custom [items]="itemsDropdown" [data]="product"></app-dropdown-custom>
             </td>

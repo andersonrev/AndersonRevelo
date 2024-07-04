@@ -5,11 +5,12 @@ import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.in
 import { formatDateWithYYYYMMDD } from '../../utilities/format-date.function';
 import { dateNotLessThanCurrent } from './validators/date-validators.function';
 import { ProductValidatorsService } from './validators/product-validators.service';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-form-product',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgClass, NgStyle],
   templateUrl: './form-product.component.html',
   styleUrl: './form-product.component.scss'
 })
@@ -194,7 +195,10 @@ export class FormProductComponent implements OnInit {
           const minMaxLength: number = control.errors[keyError].requiredLength;
           return this.errorMessages[keyError] ? this.errorMessages[keyError](minMaxLength) : 'Error desconocido'
 
-        } else {
+        } else if (keyError === 'dateNotPass') {
+          return 'La fecha tiene que ser mayor o igual a la actual';
+        }
+        else {
           return this.errorMessages[keyError] ? this.errorMessages[keyError]() : 'Error desconocido'
         }
       }
@@ -210,6 +214,7 @@ export class FormProductComponent implements OnInit {
     // console.log(this.errorMessages['minlength'](3));
     // console.log(this.errorMessages['maxlength'](10));
     console.log(this.form);
+
   }
 
 
