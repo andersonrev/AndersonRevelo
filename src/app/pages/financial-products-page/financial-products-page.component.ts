@@ -38,7 +38,7 @@ export class FinancialProductsPageComponent implements OnInit {
     this.getProducts();
   }
 
-  getProducts() {
+  getProducts(): void {
     this.productoHttpService.getProducts().subscribe({
       next: (products) => {
         this.products$.next(products.slice(0, this.AMOUNT_RECORD_TO_SHOW));
@@ -51,7 +51,7 @@ export class FinancialProductsPageComponent implements OnInit {
     });
   }
 
-  goToCreateUpdatePage(idProduct?: string) {
+  goToCreateUpdatePage(idProduct?: string): void {
     if (idProduct) {
       this.router.navigate(['financial-products', 'update-product', idProduct]);
     } else {

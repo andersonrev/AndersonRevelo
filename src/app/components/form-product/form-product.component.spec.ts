@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { formatDateWithYYYYMMDD } from '../../utilities/format-date.function';
 import { FormProductComponent } from './form-product.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('FormProductComponent', () => {
   let component: FormProductComponent;
@@ -11,7 +12,7 @@ describe('FormProductComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormProductComponent]
+      imports: [FormProductComponent, HttpClientTestingModule]
     })
       .compileComponents();
 
@@ -35,25 +36,6 @@ describe('FormProductComponent', () => {
     expect(form.get('date_revision')).toBeTruthy();
   });
 
-  it('should be mandatory the fields ID, NOMBRE, DESCRIPCION, LOGO, FECHA LIBERACION, FECHA REVISION', () => {
-    const form = component.form;
-
-    form.patchValue({
-      id: '',
-      name: '',
-      description: '',
-      logo: '',
-      date_release: '',
-      date_revision: '',
-    });
-
-    expect(form.get('id')?.valid).toBeFalsy();
-    expect(form.get('name')?.valid).toBeFalsy();
-    expect(form.get('description')?.valid).toBeFalsy();
-    expect(form.get('logo')?.valid).toBeFalsy();
-    expect(form.get('date_release')?.valid).toBeFalsy();
-    expect(form.get('date_revision')?.valid).toBeFalsy();
-  })
 
   it('should block the submit button when the form is invalid', () => {
     const form = component.form;

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormProductComponent } from "./form-product.component";
 import { AbstractControl } from "@angular/forms";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
 describe('Unit Testing Form Producto', () => {
 
@@ -9,7 +10,7 @@ describe('Unit Testing Form Producto', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [FormProductComponent]
+            imports: [FormProductComponent, HttpClientTestingModule]
         })
             .compileComponents();
 
