@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Router, provideRouter } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { productsMock } from '../../constants/mock-products';
 import { ProductInterface } from '../../interfaces/product.interface';
@@ -112,15 +112,6 @@ describe('FinancialProductsPageComponent', () => {
 
 
 });
-
-
-  // it('should call deleteProduct, delete()', () => {
-  //   const spyCreateProduct = spyOn(mockedProductHttpService, 'createProduct');
-  //   spyCreateProduct.and.returnValue(of({message: '', data: mockUpdateProduct}));
-  //   component.createProduct(mockUpdateProduct);
-  //   expect(mockedProductHttpService.createProduct).toHaveBeenCalled();
-  // });
-
 
 
 

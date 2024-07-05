@@ -2,8 +2,8 @@ import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormProductComponent } from '../../components/form-product/form-product.component';
 import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
-import { ProductHttpService } from '../../services/product/product-http.service';
 import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
+import { ProductHttpService } from '../../services/product/product-http.service';
 
 @Component({
   selector: 'app-create-update-product-page',
@@ -75,19 +75,15 @@ export class CreateUpdateProductPageComponent implements OnInit {
 
     this.productoHttpService.updateProduct(id, productBody).subscribe({
       next: (resp: ResponseUpdateProductInterface) => {
-        console.log(resp);
         this.notificationService.showToast('success','Producto editado correctamente');
       },
       error: (error) => {
         console.error(error);
+        this.notificationService.showToast('error', 'Error al editar el producto');
       }
     });
   }
 
-
-  abrirToast() {
-    this.notificationService.showToast('success','algo como esto se debe ver bien');
-  }
 
 
 }

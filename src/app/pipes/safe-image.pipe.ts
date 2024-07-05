@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Pipe({
   name: 'safeImage',
@@ -7,15 +7,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class SafeImagePipe implements PipeTransform {
 
-  constructor(private _sanitizer: DomSanitizer) { }
+  // private sanitizer = inject(DomSanitizer)
+  constructor(private sanitizer: DomSanitizer) { }
 
-  transform(url?: string): SafeResourceUrl {
-
-    if (url) {
-      return this._sanitizer.bypassSecurityTrustUrl(url);
-    } else {
-      return this._sanitizer.bypassSecurityTrustResourceUrl('./assets/question.svg')
-    }
-
+  transform(url: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }

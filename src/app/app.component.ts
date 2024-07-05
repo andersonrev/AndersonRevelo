@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderPageComponent } from './shared/header-page/header-page.component';
 import { NotificationsToastService } from './services/notifications/notifications-toast.service';
+import { HeaderPageComponent } from './shared/header-page/header-page.component';
 
 @Component({
   selector: 'app-root',
@@ -15,21 +15,19 @@ export class AppComponent implements OnInit {
 
   @ViewChild('toast') toats!: TemplateRef<any>;
 
-  toastType = { text: '', type: ''};
+  toastType = { text: '', type: '' };
 
   notificationService = inject(NotificationsToastService);
-  constructor(private readonly container: ViewContainerRef) {
-
-  }
+  container = inject(ViewContainerRef);
 
   ngOnInit(): void {
-    this.notificationService.showToastSubject.subscribe({
+    const sub = this.notificationService.showToastSubject.subscribe({
       next: (toast) => {
-        console.log('toast mostrar');
         this.toastType = toast;
         this.showToaster()
       }
-    })
+    });
+
   }
 
   showToaster() {
@@ -39,3 +37,4 @@ export class AppComponent implements OnInit {
 
 
 }
+

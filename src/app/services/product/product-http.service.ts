@@ -28,6 +28,10 @@ export class ProductHttpService {
     this.productsStore = this.productsStore.filter(itemProd => itemProd.id !== id)
   }
 
+  setProductsStore(products: ProductInterface[]){
+    this.productsStore = products;
+  }
+
   getProducts(): Observable<ProductInterface[]> {
     return this.http.get<respProducto>(`${this.urlBackendProducts}`).pipe(
       map(

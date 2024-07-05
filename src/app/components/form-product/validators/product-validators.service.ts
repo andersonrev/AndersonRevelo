@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidator, ValidationErrors } from '@angular/forms';
 import { Observable, catchError, map, of } from 'rxjs';
 import { ProductHttpService } from '../../../services/product/product-http.service';
@@ -8,7 +8,10 @@ import { ProductHttpService } from '../../../services/product/product-http.servi
 })
 export class ProductValidatorsService implements AsyncValidator  {
 
-  constructor(private productHttpService: ProductHttpService) { }
+  productHttpService = inject(ProductHttpService)
+  constructor(
+    // private productHttpService: ProductHttpService
+  ) { }
 
   validate(control: AbstractControl<any, any>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
 

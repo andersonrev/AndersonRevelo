@@ -76,8 +76,8 @@ export class FormProductComponent implements OnInit {
         name: this.productEditing.name,
         description: this.productEditing.description,
         logo: this.productEditing.logo,
-        date_release: this.productEditing.date_release,
-        date_revision: this.productEditing.date_revision
+        date_release: formatDateWithYYYYMMDD(new Date(this.productEditing.date_release + 'T00:00:00')),
+        date_revision: formatDateWithYYYYMMDD(new Date(this.productEditing.date_revision + 'T00:00:00'))
       });
       this.form.controls['id'].disable();
     }

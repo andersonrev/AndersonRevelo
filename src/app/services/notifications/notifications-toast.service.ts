@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ToastTypeInterface } from '../../interfaces/toast.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsToastService {
 
-  showToastSubject = new Subject<{ text: string, type: string }>();
+  showToastSubject = new Subject<ToastTypeInterface>();
 
   constructor() { }
 

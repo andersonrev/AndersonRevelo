@@ -10,7 +10,7 @@ describe('DropdownCustomComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DropdownCustomComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DropdownCustomComponent);
     component = fixture.componentInstance;
@@ -19,5 +19,25 @@ describe('DropdownCustomComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should execute function command of amount data to show', () => {
+
+    const mockSelect: any = [{
+      label: '5',
+      command: (data: any) => {
+        return 5;
+      }
+    }];
+
+    const data = 5;
+
+    component.items = mockSelect;
+
+    const f = spyOn(component.items[0], 'command');
+
+    component.emitEvent(0);
+    expect(f).toHaveBeenCalled();
+
   });
 });

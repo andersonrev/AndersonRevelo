@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
-import { FormProductComponent } from "./form-product.component";
-import { AbstractControl, FormBuilder, FormGroup } from "@angular/forms";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { Subject } from "rxjs";
+import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { AbstractControl, FormBuilder } from "@angular/forms";
+import { FormProductComponent } from "./form-product.component";
 
 describe('Unit Testing Form Producto', () => {
 
@@ -144,7 +143,6 @@ describe('Unit Testing Form Producto', () => {
         nameControl.errors = { required: true, maxlength: true };
         nameControl.touched = true;
         const responseMesages = component.getMessageErrorControl(nameControl);
-        console.log(nameControl);
         expect(responseMesages.length).toBeGreaterThan(0);
     });
 

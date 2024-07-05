@@ -8,6 +8,7 @@ import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
 import { FooterTableComponent } from '../../shared/footer-table/footer-table.component';
 import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-financial-products-page',
@@ -173,5 +174,6 @@ export class FinancialProductsPageComponent implements OnInit {
     this.productoToDelete = product;
     this.container.createEmbeddedView(this.modal, this);
   }
+
 
 }
