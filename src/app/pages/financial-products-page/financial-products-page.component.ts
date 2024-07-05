@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -7,6 +7,7 @@ import { TableProductsComponent } from '../../components/table-products/table-pr
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
 import { FooterTableComponent } from '../../shared/footer-table/footer-table.component';
+import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
 
 @Component({
   selector: 'app-financial-products-page',
@@ -17,12 +18,17 @@ import { FooterTableComponent } from '../../shared/footer-table/footer-table.com
 })
 export class FinancialProductsPageComponent implements OnInit {
 
+  @ViewChild('modal') modal!: TemplateRef<any>;
 
   private productoHttpService = inject(ProductHttpService);
-
+  container = inject(ViewContainerRef)
   private router = inject(Router);
+  private notificationService =inject(NotificationsToastService);
+
 
   products$ = new BehaviorSubject<ProductInterface[]>([]);
+
+  
 
   search = '';
   totalProducts = 0;
@@ -33,6 +39,8 @@ export class FinancialProductsPageComponent implements OnInit {
 
   AMOUNT_RECORD_TO_SHOW = 5;
 
+
+  productoToDelete!: ProductInterface;
 
   ngOnInit(): void {
     this.getProducts();
@@ -60,8 +68,36 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
 
-  deleteProduct(idProduct: string) {
+  deleteProduct() {
     // console.log('esto vamos a eliminar', idProduct);
+    this.productoHttpService.deleteProduct(this.productoToDelete.id).subscribe({
+      next: (resp) => {
+        this.notificationService.showToast('success', 'Producto eliminado correctamente')
+        this.removeItemFromTable(this.productoToDelete.id);
+        this.container.clear();
+      },
+      error: (e) =>{
+        this.notificationService.showToast('error', 'Producto eliminado correctamente')
+        this.container.clear();
+      }
+    })
+  }
+
+  removeItemFromTable(id: string){
+    const newProducts = this.products$.getValue().filter( itemProd => itemProd.id != id);
+    this.productoHttpService.removeProductoFromStore(id);
+
+    this.totalProducts--;
+    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
+
+    if(newProducts.length === 0 && this.currentPage > 1){
+      this.currentPage--;
+      this.showPreviousAmount(this.AMOUNT_RECORD_TO_SHOW);
+      // emitir nuevamente
+    }else {
+      this.products$.next(newProducts);
+    }
+
   }
 
   searchInTable(): void {
@@ -74,12 +110,12 @@ export class FinancialProductsPageComponent implements OnInit {
 
     } else {
       this.products$.next(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
-      this.totalProducts = this.productoHttpService.getProductsStore.length;
+      this.totalProducts = this.productoHttpService.getProductsStore().length;
     }
 
     this.currentPage = 1;
     this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
-  
+
   }
 
 
@@ -131,6 +167,11 @@ export class FinancialProductsPageComponent implements OnInit {
 
     }
 
+  }
+
+  showDeleteModal(product: ProductInterface) {
+    this.productoToDelete = product;
+    this.container.createEmbeddedView(this.modal, this);
   }
 
 }

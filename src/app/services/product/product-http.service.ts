@@ -24,6 +24,10 @@ export class ProductHttpService {
     return this.productsStore;
   }
 
+  removeProductoFromStore(id: string): void {
+    this.productsStore = this.productsStore.filter(itemProd => itemProd.id !== id)
+  }
+
   getProducts(): Observable<ProductInterface[]> {
     return this.http.get<respProducto>(`${this.urlBackendProducts}`).pipe(
       map(
@@ -42,8 +46,11 @@ export class ProductHttpService {
   }
 
   verificationId(id: string): Observable<boolean> {
-    console.log('id', id);
     return this.http.get<boolean>(`${this.urlBackendProducts}/verification/${id}`);
+  }
+
+  deleteProduct(id: string) {
+    return this.http.delete<ResponseUpdateProductInterface>(`${this.urlBackendProducts}/${id}`);
   }
 
 }

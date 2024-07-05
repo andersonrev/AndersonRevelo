@@ -37,7 +37,7 @@ input {
     z-index: 10;
 
     &.error {
-       background-color: red; 
+        background-color: red;
     }
 }
 
@@ -65,7 +65,30 @@ input {
     }
 }
 
-// sets
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    /* Puedes ajustar el ancho según tus necesidades */
+    max-width: 500px;
+    /* Asegúrate de que no sea demasiado grande */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
 
 $gl-ms : "screen and (max-width: 23.5em)"; // up to 360px
 $gl-xs : "screen and (max-width: 35.5em)"; // up to 568px
@@ -126,7 +149,8 @@ table {
 }
 
 
-@media #{$gl-xs} {// 568px
+@media #{$gl-xs} {
+    // 568px
 
     table {
         display: block;

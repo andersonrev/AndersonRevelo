@@ -17,14 +17,13 @@ export class TableProductsComponent {
   @Input()
   products: ProductInterface[] | null = [];
 
-  @Input()
-  totalRecords = 0;
+
 
   @Output()
   eventUpdateProduct = new EventEmitter<ProductInterface>();
 
   @Output()
-  eventDeleteProduct = new EventEmitter<string>();
+  eventDeleteProduct = new EventEmitter<ProductInterface>();
 
   itemsDropdown: { label: string, command: (data: any) => void }[] = [
     {
@@ -37,21 +36,19 @@ export class TableProductsComponent {
     {
       label: 'ELIMINAR',
       command: (data) => {
-        this.deleteProduct(data.id);
+        this.deleteProduct(data);
       }
     },
   ]
 
 
   editProduct(product: ProductInterface) {
-    console.log('edita el producto', product);
     this.eventUpdateProduct.emit(product);
 
   }
 
-  deleteProduct(productID: string) {
-    console.log('eliminar el producto', productID);
-    this.eventDeleteProduct.emit(productID);
+  deleteProduct(product: ProductInterface) {
+    this.eventDeleteProduct.emit(product);
   }
 
 
