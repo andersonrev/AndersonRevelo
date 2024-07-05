@@ -1,0 +1,226 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+body {
+    font-family: sans-serif;
+    background-color: rgba(168, 168, 168, 0.219);
+}
+
+button {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px 8px;
+    border-radius: 7px;
+    border-color: rgb(0 0 0 / 20%);
+}
+
+.container {
+    margin: 10em 5rem 0px 5rem;
+    box-sizing: border-box;
+}
+
+.toast {
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-color: rgba(100, 100, 100, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    margin: 20px 10px;
+    height: 30px;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    z-index: 10;
+
+    &.error {
+        background-color: red;
+    }
+}
+
+.btn {
+    border: unset;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #efd05f;
+
+    &:hover {
+        background-color: #f7d350;
+    }
+}
+
+
+
+.btn-secondary {
+    background-color: #f0f0f0;
+
+    &:hover {
+        background-color: #aaaaaa;
+    }
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    /* Puedes ajustar el ancho según tus necesidades */
+    max-width: 500px;
+    /* Asegúrate de que no sea demasiado grande */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+$gl-ms : "screen and (max-width: 23.5em)"; // up to 360px
+$gl-xs : "screen and (max-width: 35.5em)"; // up to 568px
+$gl-sm : "screen and (max-width: 48em)"; // max 768px
+$gl-md : "screen and (max-width: 64em)"; // max 1024px
+$gl-lg : "screen and (max-width: 80em)"; // max 1280px
+
+// table style
+
+table {
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+
+    * {
+        position: relative
+    }
+
+    td,
+    th {
+        padding-left: 8px
+    }
+
+    thead tr {
+        height: 60px;
+        background: rgb(250, 250, 250);
+        font-size: 16px;
+    }
+
+    tbody tr {
+        height: 48px;
+        border-bottom: 1px solid rgb(0 0 0 / 20%);
+
+        &:last-child {
+            border: 0;
+        }
+    }
+
+    td,
+    th {
+        text-align: left;
+
+        &.l {
+            text-align: right
+        }
+
+        &.c {
+            text-align: center
+        }
+
+        &.r {
+            text-align: center
+        }
+    }
+}
+
+
+@media #{$gl-xs} {
+    // 568px
+
+    table {
+        display: block;
+
+        >*,
+        tr,
+        td,
+        th {
+            display: block;
+        }
+
+        thead {
+            display: none
+        }
+
+        tbody tr {
+            height: auto;
+            padding: 8px 0;
+
+            td {
+                padding-left: 45%;
+                margin-bottom: 12px;
+
+                &:last-child {
+                    margin-bottom: 0
+                }
+
+                &:before {
+                    position: absolute;
+                    font-weight: 700;
+                    width: 40%;
+                    left: 10px;
+                    top: 0
+                }
+
+                &:nth-child(1):before {
+                    content: "Logo";
+                    text-align: left;
+                }
+
+                &:nth-child(2):before {
+                    content: "Nombre";
+                }
+
+                &:nth-child(3):before {
+                    content: "Descripción";
+                }
+
+                &:nth-child(4):before {
+                    content: "Fecha de liberación";
+                }
+
+                &:nth-child(5):before {
+                    content: "Fecha de reestructuración";
+                }
+            }
+        }
+    }
+
+
+}
+
+@media #{$gl-sm} {
+
+    .container {
+        margin: 10em 0 0 0;
+    }
+
+    #form-product {
+        grid-template-columns: 1fr;
+    }
+
+}

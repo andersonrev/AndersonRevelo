@@ -1,0 +1,18 @@
+<div class="footer">
+    <div>
+        {{totalRecords}} Resultados
+    </div>
+    <div class="paginator">
+        <button type="button" (click)="previous()">&lt;</button>
+        <button type="button" (click)="next()">&gt;</button>
+    </div>
+
+    <div class="mount-data">
+        <select name="amount-data" id="amount-data" [(ngModel)]="amountToShow" (change)="emitAmount()">
+            <option value="5" class="option">5</option>
+            <option value="10" class="option">10</option>
+            <option value="20" class="option">20</option>
+        </select>
+    </div>
+    
+</div>

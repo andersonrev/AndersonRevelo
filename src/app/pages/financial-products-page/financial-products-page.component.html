@@ -1,0 +1,28 @@
+<div class="search">
+    <input type="text" placeholder="Search..." [(ngModel)]="search" (ngModelChange)="searchInTable()">
+    <button class="btn btn-primary" (click)="goToCreateUpdatePage()">Agregar</button>
+</div>
+<div class="container-table">
+    <app-table-products [products]="products$ | async" (eventUpdateProduct)="goToCreateUpdatePage($event.id)"
+        (eventDeleteProduct)="showDeleteModal($event)"></app-table-products>
+
+    <app-footer-table [totalRecords]="totalProducts" (eventAmount)="showAmountSelected($event)"
+        (eventNext)="showNextAmount($event)" (eventPrevious)="showPreviousAmount($event)"></app-footer-table>
+
+</div>
+
+<ng-template #modal>
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                ¿Estas seguro de eliminar el producto {{productoToDelete.name}}?
+            </div>
+            <hr />
+            <div class="action-buttons">
+                <button class="btn btn-secondary" (click)="container.clear()">Cancelar</button>
+                <button class="btn btn-primary" (click)="deleteProduct()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

@@ -1,0 +1,7 @@
+<app-header-page></app-header-page>
+<div class="container">
+    <router-outlet />
+</div>
+<ng-template #toast>
+    <div [class]="'toast ' + toastType.type" >{{toastType.text}}</div>
+</ng-template>
