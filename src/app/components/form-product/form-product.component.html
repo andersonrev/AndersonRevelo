@@ -1,10 +1,11 @@
-<div >
+<div>
     <form action="" [formGroup]="form" (ngSubmit)="onSubmit()" class="form" id="form-product">
         <div class="input-item">
             <label for="id" class="form-label">ID</label>
-            <input type="text" id="id" formControlName="id" [ngClass]="errorMessagesId.length > 0 ? 'wrong-input': ''">
-            @if (errorMessagesId.length>0) {
-            @for (message of errorMessagesId; track $index) {
+            <input type="text" id="id" formControlName="id"
+                [ngClass]="errorMessagesByField.id.length > 0 ? 'wrong-input': ''">
+            @if (errorMessagesByField.id.length>0) {
+            @for (message of errorMessagesByField.id; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>
@@ -14,9 +15,10 @@
 
         <div class="input-item">
             <label for="name">Nombre</label>
-            <input type="text" id="name" formControlName="name" [ngClass]="errorMessagesName.length > 0 ? 'wrong-input': ''">
-            @if (errorMessagesName.length>0) {
-            @for (message of errorMessagesName; track $index) {
+            <input type="text" id="name" formControlName="name"
+                [ngClass]="errorMessagesByField.name.length > 0 ? 'wrong-input': ''">
+            @if (errorMessagesByField.name.length>0) {
+            @for (message of errorMessagesByField.name; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>
@@ -29,10 +31,11 @@
 
             <label for="description">Descripción</label>
 
-            <input type="text" id="description" formControlName="description" [ngClass]="errorMessagesDescription.length > 0 ? 'wrong-input': ''">
+            <input type="text" id="description" formControlName="description"
+                [ngClass]="errorMessagesByField.description.length > 0 ? 'wrong-input': ''">
 
-            @if (errorMessagesDescription.length>0) {
-            @for (message of errorMessagesDescription; track $index) {
+            @if (errorMessagesByField.description) {
+            @for (message of errorMessagesByField.description; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>
@@ -45,10 +48,11 @@
         <div class="input-item">
 
             <label for="logo">Logo</label>
-            <input type="text" id="logo" formControlName="logo" [ngClass]="errorMessagesLogo.length > 0 ? 'wrong-input': ''">
+            <input type="text" id="logo" formControlName="logo"
+                [ngClass]="errorMessagesByField.logo.length > 0 ? 'wrong-input': ''">
 
-            @if (errorMessagesLogo.length>0) {
-            @for (message of errorMessagesLogo; track $index) {
+            @if (errorMessagesByField.logo.length>0) {
+            @for (message of errorMessagesByField.logo; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>
@@ -58,10 +62,11 @@
         </div>
         <div class="input-item">
             <label for="date_release">Fecha Liberación</label>
-            <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()" [ngClass]="errorMessagesDateRelease.length > 0 ? 'wrong-input': ''">
+            <input type="date" id="date_release" formControlName="date_release" (change)="setDateRevision()"
+                [ngClass]="errorMessagesByField.date_release.length > 0 ? 'wrong-input': ''">
 
-            @if (errorMessagesDateRelease.length>0) {
-            @for (message of errorMessagesDateRelease; track $index) {
+            @if (errorMessagesByField.date_release.length>0) {
+            @for (message of errorMessagesByField.date_release; track $index) {
             <p style="color: red; font-size: 12px">
                 {{message}}
             </p>

@@ -1,3 +1,4 @@
+import { NgClass, NgStyle } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription, combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -5,7 +6,15 @@ import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.in
 import { formatDateWithYYYYMMDD } from '../../utilities/format-date.function';
 import { dateNotLessThanCurrent } from './validators/date-validators.function';
 import { ProductValidatorsService } from './validators/product-validators.service';
-import { NgClass, NgStyle } from '@angular/common';
+
+type fieldFormErrorMessages = {
+  id: string[]
+  name: string[]
+  description: string[]
+  logo: string[]
+  date_release: string[],
+  [other: string]: string[],
+}
 
 @Component({
   selector: 'app-form-product',
@@ -23,42 +32,33 @@ export class FormProductComponent implements OnInit {
   @Input()
   productEditing: ProductInterface | undefined = undefined;
 
+
+  @Output()
+  valueForm = new EventEmitter<ProductInterface | bodyProductUpdate>();
+
   errorMessages: {
-    // required: () => string,
-    // invalidId: () => string,
     [typeError: string]: (length?: number) => string
   } =
     {
       required: () => 'Este campo es requerido',
       minlength: (minlength?: number) => `Este campo debe tener al menos ${minlength} caracteres`,
-      maxlength: (maxLength?: number) => `Este campo debe tener ${maxLength} caracteres como máximo`,
+      maxlength: (maxLength?: number) => `Este campo debe tener máximo ${maxLength} caracteres`,
       invalidId: () => 'ID nó valido!',
+      dateNotPass: () => 'La fecha tiene que ser mayor o igual a la actual',
     };
 
-  // private productValidatorService = Inject(ProductValidatorsService);
 
-  errorMessagesId: string[] = [];
-  errorMessagesName: string[] = [];
-  errorMessagesDescription: string[] = [];
-  errorMessagesLogo: string[] = [];
-  errorMessagesDateRelease: string[] = [];
+  errorMessagesByField: fieldFormErrorMessages = { id: [], name: [], description: [], logo: [], date_release: [] }
 
   formSubscription!: Subscription;
 
-
-  @Output()
-  valueForm = new EventEmitter<ProductInterface | bodyProductUpdate>();
-
   constructor(private fb: FormBuilder, private productValidatorService: ProductValidatorsService) {
     this.form = this.fb.group({
-      // id: ['',
-      //   // [Validators.required, Validators.minLength(3), Validators.maxLength(10)],
-      //   [asyncIdValidatorProduct(this.productValidatorService)]
-      // ],
+
       id: ['',
         {
-          Validators: [Validators.required, Validators.minLength(3), Validators.maxLength(10)],
-          asyncValidators: [this.productValidatorService.validate.bind(this.productValidatorService)]
+          asyncValidators: [this.productValidatorService.validate.bind(this.productValidatorService)],
+          validators: [Validators.required, Validators.minLength(3), Validators.maxLength(10)],
         }
       ],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
@@ -86,7 +86,6 @@ export class FormProductComponent implements OnInit {
 
   }
   onSubmit() {
-    console.log('form', this.form.getRawValue());
     this.valueForm.emit(this.form.getRawValue());
   }
 
@@ -104,38 +103,8 @@ export class FormProductComponent implements OnInit {
           )
         )
       ).subscribe({
-        next: (value) => {
-
-          const idControl = this.form.get('id');
-
-          if (idControl) this.errorMessagesId = this.setMessageErrorOnControl(idControl)
-
-          const nameControl = this.form.get('name');
-
-          if (nameControl) this.errorMessagesName = this.setMessageErrorOnControl(nameControl)
-
-          const descriptionControl = this.form.get('description');
-
-          if (descriptionControl) this.errorMessagesDescription = this.setMessageErrorOnControl(descriptionControl)
-
-          const logoControl = this.form.get('logo');
-
-          if (logoControl) this.errorMessagesLogo = this.setMessageErrorOnControl(logoControl)
-
-          const date_releaseControl = this.form.get('date_release');
-
-          if (date_releaseControl) this.errorMessagesDateRelease = this.setMessageErrorOnControl(date_releaseControl)
-
-
-          if (value[0].date_release) {
-            const dateRelease = new Date(value[0].date_release);
-
-            dateRelease.setDate(dateRelease.getDate() + 365);
-
-            this.form.get('date_revision')?.patchValue(dateRelease.toISOString().slice(0, 10));
-          }
-
-
+        next: ([values, status]) => {
+          this.handleFormChanges(values);
         }
       }
       )
@@ -186,8 +155,7 @@ export class FormProductComponent implements OnInit {
     return dateRevision;
   }
 
-  setMessageErrorOnControl(control: AbstractControl) {
-    console.log('validando')
+  getMessageErrorControl(control: AbstractControl): string[] {
     let errorMessages: string[] = [];
     if ((control.dirty || control.touched) && control.errors) {
       errorMessages = Object.keys(control.errors).map(keyError => {
@@ -196,28 +164,44 @@ export class FormProductComponent implements OnInit {
           return this.errorMessages[keyError] ? this.errorMessages[keyError](minMaxLength) : 'Error desconocido'
 
         } else if (keyError === 'dateNotPass') {
-          return 'La fecha tiene que ser mayor o igual a la actual';
+          return this.errorMessages[keyError]();
         }
         else {
           return this.errorMessages[keyError] ? this.errorMessages[keyError]() : 'Error desconocido'
         }
       }
       );
-    } else {
-      errorMessages = [];
     }
     return errorMessages;
   }
 
-  verAlgo() {
-    // console.log(this.errorMessages['required']());
-    // console.log(this.errorMessages['minlength'](3));
-    // console.log(this.errorMessages['maxlength'](10));
-    console.log(this.form);
 
+  private setControlErrorMessage(controlName: string, controlValue: any): void {
+    const control = this.form.get(controlName);
+    if (control) {
+      const errorMessages = this.getMessageErrorControl(control);
+      this.errorMessagesByField[controlName] = errorMessages;
+    }
+  }
+
+  private handleFormChanges(values: any): void {
+    this.setControlErrorMessage('id', values.id);
+    this.setControlErrorMessage('name', values.name);
+    this.setControlErrorMessage('description', values.description);
+    this.setControlErrorMessage('logo', values.logo);
+    this.setControlErrorMessage('date_release', values.date_release);
+
+    if (values.date_release) {
+      const dateRelease = new Date(values.date_release);
+      dateRelease.setDate(dateRelease.getDate() + 365);
+      this.form.get('date_revision')?.patchValue(dateRelease.toISOString().slice(0, 10));
+    }
   }
 
 
+  verAlgo() {
+    // console.log(this.form);
+  }
 
 
 

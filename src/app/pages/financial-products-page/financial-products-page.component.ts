@@ -82,6 +82,7 @@ export class FinancialProductsPageComponent implements OnInit {
     }
   }
 
+
   showAmountSelected(amount: number) {
     // si el amount es mayor al numero de registros no hacer nada
     // casoo contrario
@@ -134,6 +135,8 @@ export class FinancialProductsPageComponent implements OnInit {
     }
 
   }
+
+
 
 
 
