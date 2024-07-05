@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { ProductInterface } from '../../interfaces/product.interface';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, shareReplay, tap } from 'rxjs';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 
 
@@ -33,7 +33,7 @@ export class ProductHttpService {
   }
 
   createProduct(newProduct: ProductInterface) {
-    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, newProduct);
+    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, newProduct).pipe(shareReplay());
   }
 
   updateProduct(id: string, body: Omit<ProductInterface, 'id'>) {

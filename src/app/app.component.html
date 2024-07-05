@@ -3,5 +3,5 @@
     <router-outlet />
 </div>
 <ng-template #toast>
-    <div class="toast">{{textToast}}</div>
+    <div [class]="'toast ' + toastType.type" >{{toastType.text}}</div>
 </ng-template>

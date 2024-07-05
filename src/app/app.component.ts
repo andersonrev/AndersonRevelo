@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('toast') toats!: TemplateRef<any>;
 
-  textToast = '';
+  toastType = { text: '', type: ''};
 
   notificationService = inject(NotificationsToastService);
   constructor(private readonly container: ViewContainerRef) {
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     this.notificationService.showToastSubject.subscribe({
       next: (toast) => {
         console.log('toast mostrar');
-        this.textToast = toast;
+        this.toastType = toast;
         this.showToaster()
       }
     })
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
   showToaster() {
     this.container.createEmbeddedView(this.toats, this);
-    // setTimeout(() => { this.container.clear() }, 1500)
+    setTimeout(() => { this.container.clear() }, 1500)
   }
 
 

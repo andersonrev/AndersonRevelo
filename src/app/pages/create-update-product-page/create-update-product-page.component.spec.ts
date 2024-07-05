@@ -55,7 +55,9 @@ describe('CreateUpdateProductPageComponent', () => {
   it('should call updateProduct, updateProduct()', () => {
     const spyUpdateProduct = spyOn(mockedProductHttpService, 'updateProduct');
     spyUpdateProduct.and.returnValue(of({ message: '', data: mockUpdateProduct }));
-    component.updateProduct(mockUpdateProduct);
+    component.productEditing = mockUpdateProduct;
+    component.isEditing = true;
+    component.sendBody(mockUpdateProduct);
     expect(mockedProductHttpService.updateProduct).toHaveBeenCalled();
   });
 
@@ -68,7 +70,7 @@ describe('CreateUpdateProductPageComponent', () => {
   });
 
   it('should call getProductsStore when user is editing product', () => {
-    const spyCreateProduct = spyOn(mockedProductHttpService, 'getProductsStore').and.returnValue([]);
+    spyOn(mockedProductHttpService, 'getProductsStore').and.returnValue([]);
     component.id = '123'
     component.ngOnInit()
     expect(mockedProductHttpService.getProductsStore).toHaveBeenCalled();

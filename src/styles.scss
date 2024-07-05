@@ -8,6 +8,7 @@ body {
 
 button {
     cursor: pointer;
+    font-weight: bold;
 }
 
 input {
@@ -22,7 +23,7 @@ input {
 }
 
 .toast {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     background-color: rgba(100, 100, 100, 0.9);
@@ -33,6 +34,11 @@ input {
     color: white;
     padding: 10px 20px;
     font-weight: bold;
+    z-index: 10;
+
+    &.error {
+       background-color: red; 
+    }
 }
 
 .btn {
@@ -120,7 +126,7 @@ table {
 }
 
 
-@media #{$gl-xs} {
+@media #{$gl-xs} {// 568px
 
     table {
         display: block;
@@ -129,7 +135,7 @@ table {
         tr,
         td,
         th {
-            display: block
+            display: block;
         }
 
         thead {
@@ -158,6 +164,7 @@ table {
 
                 &:nth-child(1):before {
                     content: "Logo";
+                    text-align: left;
                 }
 
                 &:nth-child(2):before {
@@ -182,14 +189,10 @@ table {
 
 }
 
+@media #{$gl-sm} {
 
-
-@media only screen and (max-width: 1024px) {}
-
-/* Small devices such as phones (768px or lesser) */
-@media only screen and (max-width: 768px) {
     .container {
-        margin: 0;
+        margin: 10em 0 0 0;
     }
 
     #form-product {

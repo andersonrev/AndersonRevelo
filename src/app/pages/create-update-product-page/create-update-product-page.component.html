@@ -1,10 +1,6 @@
 <div style="background-color: white; margin: auto; max-width: 780px;">
-
     <h2> Formulario de Registro</h2>
-    <pre>edita: {{isEditing}}</pre>
     <hr/>
     <app-form-product [isEditing]="isEditing" [productEditing]="productEditing"
         (valueForm)="sendBody($event)"></app-form-product>
-    <button (click)="abrirToast()">adfadsf</button>
-
 </div>

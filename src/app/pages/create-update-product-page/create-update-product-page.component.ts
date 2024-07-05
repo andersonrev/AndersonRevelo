@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormProductComponent } from '../../components/form-product/form-product.component';
 import { ProductInterface, bodyProductUpdate } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
@@ -13,6 +13,8 @@ import { NotificationsToastService } from '../../services/notifications/notifica
   styleUrl: './create-update-product-page.component.scss'
 })
 export class CreateUpdateProductPageComponent implements OnInit {
+
+  @ViewChild(FormProductComponent) childFormComponent!: FormProductComponent;
 
   @Input('id')
   id: string = '';
@@ -40,28 +42,10 @@ export class CreateUpdateProductPageComponent implements OnInit {
   sendBody(body: ProductInterface | bodyProductUpdate) {
     if (this.isEditing && this.productEditing) {
       // llamar al servicio editar
-      this.productoHttpService.updateProduct(this.productEditing.id, body).subscribe({
-        next: (resp: ResponseUpdateProductInterface) => {
-          console.log(resp);
-
-        },
-        error: (e) => {
-          console.error(e);
-        }
-      });
+      this.updateProduct(this.productEditing.id, body as ProductInterface);
     } else {
       // llamar al sevicio crear
-
-      this.productoHttpService.createProduct(body as ProductInterface).subscribe({
-        next: (resp: ResponseUpdateProductInterface) => {
-          console.log(resp);
-          this.notificationService.showToast('Creado correctamente');
-        },
-        error: (e) => {
-          console.error(e);
-        }
-      });
-
+      this.createProduct(body as ProductInterface);
     }
 
   }
@@ -69,15 +53,17 @@ export class CreateUpdateProductPageComponent implements OnInit {
   createProduct(product: ProductInterface) {
     this.productoHttpService.createProduct(product).subscribe({
       next: (resp: ResponseCreateProductInterface) => {
-        console.log(resp);
+          this.notificationService.showToast('success','Creado correctamente');
+          this.childFormComponent.onReset();
       },
       error: (error) => {
         console.error(error);
+        this.notificationService.showToast('error','Error al crear producto');
       }
     })
   }
 
-  updateProduct(product: ProductInterface) {
+  updateProduct(id: string, product: ProductInterface) {
 
     const productBody: Omit<ProductInterface, 'id'> = {
       date_release: product.date_release,
@@ -86,18 +72,21 @@ export class CreateUpdateProductPageComponent implements OnInit {
       logo: product.logo,
       name: product.name
     }
-    console.log('esto vamos a enivar al service', product);
-    this.productoHttpService.updateProduct(product.id, productBody).subscribe({
+
+    this.productoHttpService.updateProduct(id, productBody).subscribe({
       next: (resp: ResponseUpdateProductInterface) => {
         console.log(resp);
+        this.notificationService.showToast('success','Producto editado correctamente');
       },
       error: (error) => {
         console.error(error);
       }
     });
   }
+
+
   abrirToast() {
-    this.notificationService.showToast('algo como esto se debe ver bien');
+    this.notificationService.showToast('success','algo como esto se debe ver bien');
   }
 
 

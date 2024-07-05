@@ -6,11 +6,11 @@ import { Subject } from 'rxjs';
 })
 export class NotificationsToastService {
 
-  showToastSubject = new Subject<string>();
+  showToastSubject = new Subject<{ text: string, type: string }>();
 
   constructor() { }
 
-  showToast(text: string) {
-    this.showToastSubject.next(text);
+  showToast(type: 'success' | 'error', text: string) {
+    this.showToastSubject.next({ text, type });
   }
 }

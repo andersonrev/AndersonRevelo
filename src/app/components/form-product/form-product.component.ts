@@ -32,7 +32,6 @@ export class FormProductComponent implements OnInit {
   @Input()
   productEditing: ProductInterface | undefined = undefined;
 
-
   @Output()
   valueForm = new EventEmitter<ProductInterface | bodyProductUpdate>();
 
@@ -197,13 +196,6 @@ export class FormProductComponent implements OnInit {
       this.form.get('date_revision')?.patchValue(dateRelease.toISOString().slice(0, 10));
     }
   }
-
-
-  verAlgo() {
-    // console.log(this.form);
-  }
-
-
 
 }
 
