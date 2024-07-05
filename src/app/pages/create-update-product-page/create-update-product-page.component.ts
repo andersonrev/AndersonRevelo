@@ -31,13 +31,9 @@ export class CreateUpdateProductPageComponent implements OnInit {
   ngOnInit(): void {
     if (this.id) {
       this.isEditing = true;
-      const products = this.productoHttpService.getProductsStore;
+      const products = this.productoHttpService.getProductsStore();
       this.productEditing = products.find(product => product.id === this.id);
     }
-  }
-
-  setFormWithData(product: ProductInterface) {
-
   }
 
 

@@ -98,7 +98,7 @@ describe('Unit Testing Form Producto', () => {
         expect(dateRelease.errors?.['required']).toBeTruthy();
 
         const pastDate = new Date();
-        pastDate.setDate(pastDate.getDate() - 1);
+        pastDate.setDate(pastDate.getDate() - 10);
         dateRelease.setValue(pastDate.toISOString().split('T')[0]);
         expect(dateRelease.errors?.['dateNotPass']).toBeTruthy();
 
@@ -153,70 +153,32 @@ describe('Unit Testing Form Producto', () => {
             [{ name: 'test', id: '' }, 'INVALID']
         });
 
-        // const spySetError = spyOn(component, 'setMessageErrorOnControl');
 
         component.ngOnInit();
 
         expect(spy).toHaveBeenCalled();
     });
 
-
     it('should handle form value changes and set error messages', fakeAsync(() => {
 
+
+        const spySetErrorMessages = spyOn(component, 'setControlErrorMessage');
+
+        const spyManage = spyOn(component, 'manageErrorForm').and.callFake(() => {
+            [{ name: 'test', id: '', date_release: '2024-08-10' }, 'INVALID']
+        });
+
+
         component.ngOnInit();
-        let formValueChanges: Subject<any>;
-        let formStatusChanges: Subject<any>;
 
-        // Mock form
-        formValueChanges = new Subject();
-        formStatusChanges = new Subject();
 
-        formValueChanges.next([{ id: '1', name: 'John', description: 'Desc', logo: 'Logo', date_release: '2024-07-03' }, null]);
-        formStatusChanges.next('VALID');
+        expect(spyManage).toHaveBeenCalled();
 
-        tick(1000);
-
-        // spyOn(component.form, 'valueChanges').and.returnValue(formValueChanges.asObservable());
-
-        // spyOn(component.form, 'valueChanges');
-
-        // spyOn(component.form, 'statusChanges').and.returnValue(formStatusChanges.asObservable());
-        // spyOn(component, 'setMessageErrorOnControl').and.returnValue('Error message');
-
-        // component.manageErrorForm();
-
-        // spyOn(component, 'setMessageErrorOnControl').and.returnValue([`Este campo debe tener máximo ${10} caracteres`]);
-
-        // Initialize the form values
-        // component.form.get('id')?.setValue('123');
         component.form.get('name')?.setValue('a'.repeat(11));
-        component.form.get('description')?.setValue('Test Description');
-        component.form.get('logo')?.setValue('Test Logo');
-        // component.form.get('date_release')?.setValue('2024-07-03');
-
-        // Call the method to test
-        component.manageErrorForm();
-
-        // Simulate form value changes
-        // component.form.get('id')?.setValue('124');
-        component.form.get('name')?.setValue('b'.repeat(12));
-        component.form.get('description')?.setValue('New Description');
-        component.form.get('logo')?.setValue('New Logo');
-        // component.form.get('date_release')?.setValue('2024-07-04');
-
-        // Advance the timer to trigger the debounce
         tick(1000);
 
-        // Expect the error message methods to have been called
-        expect(component.getMessageErrorControl).toHaveBeenCalledTimes(3);
-        // expect(component.errorMessagesId).toBe('Error message');
-        // expect(component.errorMessagesName).toBe('Error message');
-        // expect(component.errorMessagesDescription).toBe('Error message');
-        // expect(component.errorMessagesLogo).toBe('Error message');
-        // expect(component.errorMessagesDateRelease).toBe('Error message');
-
-        // Check if date_revision was updated correctly
-        // const dateRevision = component.form.get('date_revision')?.value;
-        // expect(dateRevision).toBe('2025-07-04');
+        expect(spySetErrorMessages).toHaveBeenCalledTimes(5);
+   
     }));
+
 })

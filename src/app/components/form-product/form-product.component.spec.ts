@@ -51,7 +51,7 @@ describe('FormProductComponent', () => {
     fixture.detectChanges();
     expect(form.invalid).toBeTrue();
 
-    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('.btn-submit')).nativeElement;
+    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('#btn-submit')).nativeElement;
     expect(buttonSubmit.disabled).toBeTrue();
 
   });
@@ -74,14 +74,14 @@ describe('FormProductComponent', () => {
 
     fixture.detectChanges();
     expect(form.valid).toBeTrue();
-    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('.btn-submit')).nativeElement;
+    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('#btn-submit')).nativeElement;
     expect(buttonSubmit.disabled).toBeFalse();
 
   });
 
   it('should reset the form when click on the reset button', () => {
 
-    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('.btn-reset')).nativeElement;
+    const buttonSubmit: HTMLButtonElement = fixture.debugElement.query(By.css('#btn-reset')).nativeElement;
     buttonSubmit.click();
 
     const isEditing = component.isEditing;

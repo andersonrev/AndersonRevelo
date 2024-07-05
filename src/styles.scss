@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
+
 body {
     font-family: sans-serif;
+    background-color: rgba(168, 168, 168, 0.219);
+}
+
+button {
+    cursor: pointer;
 }
 
 input {
@@ -9,12 +15,10 @@ input {
     border-radius: 7px;
     border-color: rgb(0 0 0 / 20%);
 }
-.container {
-    margin-right: auto;
-    margin-left: auto;
-    margin: 0px 5rem;
-    box-sizing: border-box;
 
+.container {
+    margin: 10em 5rem 0px 5rem;
+    box-sizing: border-box;
 }
 
 .toast {
@@ -31,6 +35,29 @@ input {
     font-weight: bold;
 }
 
+.btn {
+    border: unset;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #efd05f;
+
+    &:hover {
+        background-color: #f7d350;
+    }
+}
+
+
+
+.btn-secondary {
+    background-color: #f0f0f0;
+
+    &:hover {
+        background-color: #aaaaaa;
+    }
+}
 
 // sets
 
@@ -67,7 +94,7 @@ table {
 
     tbody tr {
         height: 48px;
-        border-bottom: 1px solid rgb( 0 0 0 / 20%);
+        border-bottom: 1px solid rgb(0 0 0 / 20%);
 
         &:last-child {
             border: 0;

@@ -1,8 +1,12 @@
 <div class="search">
     <input type="text" placeholder="Search..." [(ngModel)]="search" (ngModelChange)="searchInTable()">
-    <button (click)="goToCreateUpdatePage()">Agregar</button>
+    <button class="btn btn-primary" (click)="goToCreateUpdatePage()">Agregar</button>
 </div>
-<app-table-products [products]="products$ | async" (eventDeleteProduct)="deleteProduct($event)"
-    [totalRecords]="totalProducts" (eventUpdateProduct)="goToCreateUpdatePage($event.id)"></app-table-products>
+<div class="container-table">
+    <app-table-products [products]="products$ | async" (eventDeleteProduct)="deleteProduct($event)"
+        [totalRecords]="totalProducts" (eventUpdateProduct)="goToCreateUpdatePage($event.id)"></app-table-products>
 
-<app-footer-table [totalRecords]="totalProducts" (eventAmount)="showAmountSelected($event)" (eventNext)="showNextAmount($event)" (eventPrevious)="showPreviousAmount($event)"></app-footer-table>
+    <app-footer-table [totalRecords]="totalProducts" (eventAmount)="showAmountSelected($event)"
+        (eventNext)="showNextAmount($event)" (eventPrevious)="showPreviousAmount($event)"></app-footer-table>
+
+</div>

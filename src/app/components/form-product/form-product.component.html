@@ -1,14 +1,14 @@
 <div>
-    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()" class="form" id="form-product">
+    <form action="" [formGroup]="form" class="form" id="form-product">
         <div class="input-item">
             <label for="id" class="form-label">ID</label>
             <input type="text" id="id" formControlName="id"
                 [ngClass]="errorMessagesByField.id.length > 0 ? 'wrong-input': ''">
             @if (errorMessagesByField.id.length>0) {
             @for (message of errorMessagesByField.id; track $index) {
-            <p style="color: red; font-size: 12px">
+            <span style="color: red; font-size: 12px">
                 {{message}}
-            </p>
+            </span>
             }
             }
         </div>
@@ -19,9 +19,9 @@
                 [ngClass]="errorMessagesByField.name.length > 0 ? 'wrong-input': ''">
             @if (errorMessagesByField.name.length>0) {
             @for (message of errorMessagesByField.name; track $index) {
-            <p style="color: red; font-size: 12px">
+            <span style="color: red; font-size: 12px">
                 {{message}}
-            </p>
+            </span>
             }
             }
 
@@ -36,9 +36,9 @@
 
             @if (errorMessagesByField.description) {
             @for (message of errorMessagesByField.description; track $index) {
-            <p style="color: red; font-size: 12px">
+            <span style="color: red; font-size: 12px">
                 {{message}}
-            </p>
+            </span>
             }
             }
 
@@ -53,9 +53,9 @@
 
             @if (errorMessagesByField.logo.length>0) {
             @for (message of errorMessagesByField.logo; track $index) {
-            <p style="color: red; font-size: 12px">
+            <span style="color: red; font-size: 12px">
                 {{message}}
-            </p>
+            </span>
             }
             }
 
@@ -67,9 +67,9 @@
 
             @if (errorMessagesByField.date_release.length>0) {
             @for (message of errorMessagesByField.date_release; track $index) {
-            <p style="color: red; font-size: 12px">
+            <span style="color: red; font-size: 12px">
                 {{message}}
-            </p>
+            </span>
             }
             }
         </div>
@@ -79,21 +79,24 @@
             <input type="date" id="date_revision" formControlName="date_revision">
         </div>
 
-        <div class="input-item">
 
-            <button class="btn-submit" type="submit" [disabled]="form.invalid">
-                Enviar
-            </button>
-        </div>
 
-        <div class="input-item">
 
-            <button class="btn-reset" type="button" (click)="onReset()">
-                Reiniciar
-            </button>
 
-        </div>
+
+
     </form>
+
+    <div class="action-buttons">
+
+        <button class="btn btn-secondary" type="button" id="btn-reset" (click)="onReset()">
+            Reiniciar
+        </button>
+        <button class="btn btn-primary" type="submit" id="btn-submit" (click)="onSubmit()" [disabled]="form.invalid">
+            Enviar
+        </button>
+
+    </div>
 
 </div>
 

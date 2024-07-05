@@ -20,7 +20,7 @@ export class ProductHttpService {
   constructor(private http: HttpClient) {
   }
 
-  get getProductsStore() {
+  getProductsStore() {
     return this.productsStore;
   }
 
@@ -33,7 +33,7 @@ export class ProductHttpService {
   }
 
   createProduct(newProduct: ProductInterface) {
-    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, { ...newProduct, id: this.randomString(4) });
+    return this.http.post<ResponseCreateProductInterface>(`${this.urlBackendProducts}`, newProduct);
   }
 
   updateProduct(id: string, body: Omit<ProductInterface, 'id'>) {
@@ -41,16 +41,9 @@ export class ProductHttpService {
     return this.http.put<ResponseUpdateProductInterface>(`${this.urlBackendProducts}/${id}`, body);
   }
 
-  verificationId(id:string): Observable<boolean>{
+  verificationId(id: string): Observable<boolean> {
     console.log('id', id);
     return this.http.get<boolean>(`${this.urlBackendProducts}/verification/${id}`);
-  }
-
-  randomString(length: number) {
-    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let result = '';
-    for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-    return result;
   }
 
 }

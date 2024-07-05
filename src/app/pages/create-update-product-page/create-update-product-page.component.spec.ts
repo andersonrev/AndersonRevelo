@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateUpdateProductPageComponent } from './create-update-product-page.component';
 import { Observable, of } from 'rxjs';
 import { productsMock } from '../../constants/mock-products';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
-import { ActivatedRoute } from '@angular/router';
+import { CreateUpdateProductPageComponent } from './create-update-product-page.component';
 
 describe('CreateUpdateProductPageComponent', () => {
   let component: CreateUpdateProductPageComponent;
@@ -24,13 +23,15 @@ describe('CreateUpdateProductPageComponent', () => {
   const mockedProductHttpService: {
     getProducts: () => Observable<ProductInterface[]>
     createProduct: () => Observable<ResponseCreateProductInterface>
-    updateProduct: (id: string, product: ProductInterface) => Observable<ResponseUpdateProductInterface>
+    updateProduct: (id: string, product: ProductInterface) => Observable<ResponseUpdateProductInterface>,
+    getProductsStore: () => ProductInterface[]
 
   } = {
 
     getProducts: () => of(productsMock),
     createProduct: () => of({ message: '', data: productsMock[0] }),
-    updateProduct: () => of({ message: '', data: mockUpdateProduct })
+    updateProduct: () => of({ message: '', data: mockUpdateProduct }),
+    getProductsStore: () => []
 
 
   }
@@ -51,7 +52,7 @@ describe('CreateUpdateProductPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should call updateProduct, updateProduct()', () => {
+  it('should call updateProduct, updateProduct()', () => {
     const spyUpdateProduct = spyOn(mockedProductHttpService, 'updateProduct');
     spyUpdateProduct.and.returnValue(of({ message: '', data: mockUpdateProduct }));
     component.updateProduct(mockUpdateProduct);
@@ -59,10 +60,17 @@ describe('CreateUpdateProductPageComponent', () => {
   });
 
 
-  xit('should call createProduct, createProduct()', () => {
+  it('should call createProduct, createProduct()', () => {
     const spyCreateProduct = spyOn(mockedProductHttpService, 'createProduct');
     spyCreateProduct.and.returnValue(of({ message: '', data: mockUpdateProduct }));
     component.createProduct(mockUpdateProduct);
     expect(mockedProductHttpService.createProduct).toHaveBeenCalled();
+  });
+
+  it('should call getProductsStore when user is editing product', () => {
+    const spyCreateProduct = spyOn(mockedProductHttpService, 'getProductsStore').and.returnValue([]);
+    component.id = '123'
+    component.ngOnInit()
+    expect(mockedProductHttpService.getProductsStore).toHaveBeenCalled();
   });
 });

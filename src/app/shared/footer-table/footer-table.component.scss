@@ -2,3 +2,26 @@
     display: flex;
     justify-content: space-between;
 }
+
+select {
+    padding: 7px 20px;
+}
+
+.paginator {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    
+    button {
+        background: white;
+        border-radius: 50%;
+        border: 1px #efd05f solid;
+        width: 30px;
+        height: 30px;
+    }
+
+    button:hover{
+        background-color: #efd05f  ;
+    }
+}

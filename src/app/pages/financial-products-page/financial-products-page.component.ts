@@ -61,35 +61,35 @@ export class FinancialProductsPageComponent implements OnInit {
 
 
   deleteProduct(idProduct: string) {
-    console.log('esto vamos a eliminar', idProduct);
+    // console.log('esto vamos a eliminar', idProduct);
   }
 
-  searchInTable() {
+  searchInTable(): void {
     if (this.search) {
-      const productosFiltered = this.productoHttpService.getProductsStore.filter(product =>
+      const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
         product.name.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
       );
       this.products$.next(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
       this.totalProducts = productosFiltered.length;
-      this.currentPage = 1;
-      this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
 
     } else {
-      this.products$.next(this.productoHttpService.getProductsStore.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      this.products$.next(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
       this.totalProducts = this.productoHttpService.getProductsStore.length;
-      this.currentPage = 1;
-      this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
     }
+
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
+  
   }
 
 
-  showAmountSelected(amount: number) {
+  showAmountSelected(amount: number): void {
     // si el amount es mayor al numero de registros no hacer nada
     // casoo contrario
     // mostrar solo el numero de registros de amount
     this.AMOUNT_RECORD_TO_SHOW = amount;
     if (amount <= this.totalProducts) {
-      const amountOfProductsShow = this.productoHttpService.getProductsStore.slice(0, amount);
+      const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
       this.products$.next(amountOfProductsShow);
       this.currentPage = 1;
       this.totalPages = Math.ceil(this.totalProducts / amount);
@@ -108,14 +108,11 @@ export class FinancialProductsPageComponent implements OnInit {
 
     if (this.currentPage < this.totalPages && this.currentPage !== this.totalPages) {
 
-
-      const productsToShow = this.productoHttpService.getProductsStore.slice(this.currentPage * amount, this.currentPage * amount + amount);
+      const productsToShow = this.productoHttpService.getProductsStore().slice(this.currentPage * amount, this.currentPage * amount + amount);
 
       this.products$.next(productsToShow);
 
       this.currentPage++;
-
-
 
     }
 
@@ -127,7 +124,7 @@ export class FinancialProductsPageComponent implements OnInit {
 
       const indiceFinal = amount * this.currentPage - amount;
       const indiceInicial = indiceFinal - amount;
-      const productsToShow = this.productoHttpService.getProductsStore.slice(indiceInicial, indiceFinal);
+      const productsToShow = this.productoHttpService.getProductsStore().slice(indiceInicial, indiceFinal);
       this.products$.next(productsToShow);
 
       this.currentPage--;
@@ -135,9 +132,5 @@ export class FinancialProductsPageComponent implements OnInit {
     }
 
   }
-
-
-
-
 
 }

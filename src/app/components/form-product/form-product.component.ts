@@ -176,7 +176,7 @@ export class FormProductComponent implements OnInit {
   }
 
 
-  private setControlErrorMessage(controlName: string, controlValue: any): void {
+  setControlErrorMessage(controlName: string): void {
     const control = this.form.get(controlName);
     if (control) {
       const errorMessages = this.getMessageErrorControl(control);
@@ -184,12 +184,12 @@ export class FormProductComponent implements OnInit {
     }
   }
 
-  private handleFormChanges(values: any): void {
-    this.setControlErrorMessage('id', values.id);
-    this.setControlErrorMessage('name', values.name);
-    this.setControlErrorMessage('description', values.description);
-    this.setControlErrorMessage('logo', values.logo);
-    this.setControlErrorMessage('date_release', values.date_release);
+  handleFormChanges(values: any): void {
+    this.setControlErrorMessage('id');
+    this.setControlErrorMessage('name');
+    this.setControlErrorMessage('description');
+    this.setControlErrorMessage('logo');
+    this.setControlErrorMessage('date_release');
 
     if (values.date_release) {
       const dateRelease = new Date(values.date_release);

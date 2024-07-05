@@ -37,8 +37,6 @@ describe('ProductHttpService', () => {
     const respuestaTraer = spyOn(service, 'getProducts');
     service.getProducts();
     expect(respuestaTraer).toHaveBeenCalled();
-
-
   });
 
   xit('deberia ser llamada la fucnion para editar un producto', () => {
