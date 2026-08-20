@@ -1,18 +1,15 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
 import { FooterTableComponent } from '../../shared/footer-table/footer-table.component';
 import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-financial-products-page',
-    imports: [FormsModule, TableProductsComponent, AsyncPipe, FooterTableComponent],
+    imports: [FormsModule, TableProductsComponent, FooterTableComponent],
     templateUrl: './financial-products-page.component.html',
     styleUrl: './financial-products-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
