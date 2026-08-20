@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,17 +10,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class FooterTableComponent {
 
-  @Input()
-  totalRecords = 0;
+  totalRecords = input(0);
 
-  @Output()
-  eventAmount = new EventEmitter<number>();
+  eventAmount = output<number>();
 
-  @Output()
-  eventNext = new EventEmitter<number>();
+  eventNext = output<number>();
 
-  @Output()
-  eventPrevious = new EventEmitter<number>();
+  eventPrevious = output<number>();
 
   amountToShow = '5';
 

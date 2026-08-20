@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -15,7 +15,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
   standalone: true,
   imports: [FormsModule, TableProductsComponent, AsyncPipe, FooterTableComponent],
   templateUrl: './financial-products-page.component.html',
-  styleUrl: './financial-products-page.component.scss'
+  styleUrl: './financial-products-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialProductsPageComponent implements OnInit {
 
