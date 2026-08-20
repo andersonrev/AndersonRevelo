@@ -76,7 +76,7 @@ describe('FinancialProductsPageComponent', () => {
     expect(component.currentPage).toEqual(1);
     const totalProductsWithSearh = productsMock.filter(product =>
       product.name.toLocaleLowerCase().includes(component.search.toLocaleLowerCase()));
-    expect(component.totalProducts).toEqual(totalProductsWithSearh.length)
+    expect(component.totalProductsByFilter).toEqual(totalProductsWithSearh.length)
   });
 
   it('should set current page equal 1', () => {

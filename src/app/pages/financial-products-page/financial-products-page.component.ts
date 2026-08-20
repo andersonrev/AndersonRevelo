@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -28,12 +28,13 @@ export class FinancialProductsPageComponent implements OnInit {
   private notificationService =inject(NotificationsToastService);
 
 
-  products$ = new BehaviorSubject<ProductInterface[]>([]);
+  productsToDisplay = signal<ProductInterface[]>([]);
 
   
 
   search = '';
-  totalProducts = 0;
+  // TODO: transformar a linkedsignal en futuras versiones
+  totalProductsByFilter = signal<number>(0);
 
 
   totalPages = 1;
@@ -51,9 +52,9 @@ export class FinancialProductsPageComponent implements OnInit {
   getProducts(): void {
     this.productoHttpService.getProducts().subscribe({
       next: (products) => {
-        this.products$.next(products.slice(0, this.AMOUNT_RECORD_TO_SHOW));
-        this.totalProducts = products.length;
-        this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW)
+        this.productsToDisplay.set(products.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+        this.totalProductsByFilter.set(products.length);
+        this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW)
       },
       error: (e) => {
         // toast
@@ -86,18 +87,18 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   removeItemFromTable(id: string){
-    const newProducts = this.products$.getValue().filter( itemProd => itemProd.id != id);
+    const newProducts = this.productsToDisplay().filter( itemProd => itemProd.id != id);
     this.productoHttpService.removeProductoFromStore(id);
 
-    this.totalProducts--;
-    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
+    this.totalProductsByFilter.update( t => t--);
+    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW);
 
     if(newProducts.length === 0 && this.currentPage > 1){
       this.currentPage--;
       this.showPreviousAmount(this.AMOUNT_RECORD_TO_SHOW);
       // emitir nuevamente
     }else {
-      this.products$.next(newProducts);
+      this.productsToDisplay.set(newProducts);
     }
 
   }
@@ -107,16 +108,16 @@ export class FinancialProductsPageComponent implements OnInit {
       const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
         product.name.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
       );
-      this.products$.next(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
-      this.totalProducts = productosFiltered.length;
+      this.productsToDisplay.set(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      this.totalProductsByFilter.set(productosFiltered.length);
 
     } else {
-      this.products$.next(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
-      this.totalProducts = this.productoHttpService.getProductsStore().length;
+      this.productsToDisplay.set(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      this.totalProductsByFilter.set(this.productoHttpService.getProductsStore().length);
     }
 
     this.currentPage = 1;
-    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
+    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW);
 
   }
 
@@ -126,11 +127,11 @@ export class FinancialProductsPageComponent implements OnInit {
     // casoo contrario
     // mostrar solo el numero de registros de amount
     this.AMOUNT_RECORD_TO_SHOW = amount;
-    if (amount <= this.totalProducts) {
+    if (amount <= this.totalProductsByFilter()) {
       const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
-      this.products$.next(amountOfProductsShow);
+      this.productsToDisplay.set(amountOfProductsShow);
       this.currentPage = 1;
-      this.totalPages = Math.ceil(this.totalProducts / amount);
+      this.totalPages = Math.ceil(this.totalProductsByFilter() / amount);
     }
 
   }
@@ -148,7 +149,7 @@ export class FinancialProductsPageComponent implements OnInit {
 
       const productsToShow = this.productoHttpService.getProductsStore().slice(this.currentPage * amount, this.currentPage * amount + amount);
 
-      this.products$.next(productsToShow);
+      this.productsToDisplay.set(productsToShow);
 
       this.currentPage++;
 
@@ -163,7 +164,7 @@ export class FinancialProductsPageComponent implements OnInit {
       const indiceFinal = amount * this.currentPage - amount;
       const indiceInicial = indiceFinal - amount;
       const productsToShow = this.productoHttpService.getProductsStore().slice(indiceInicial, indiceFinal);
-      this.products$.next(productsToShow);
+      this.productsToDisplay.set(productsToShow);
 
       this.currentPage--;
 
