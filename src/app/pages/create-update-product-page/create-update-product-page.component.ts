@@ -6,11 +6,10 @@ import { NotificationsToastService } from '../../services/notifications/notifica
 import { ProductHttpService } from '../../services/product/product-http.service';
 
 @Component({
-  selector: 'app-create-update-product-page',
-  standalone: true,
-  imports: [FormProductComponent],
-  templateUrl: './create-update-product-page.component.html',
-  styleUrl: './create-update-product-page.component.scss'
+    selector: 'app-create-update-product-page',
+    imports: [FormProductComponent],
+    templateUrl: './create-update-product-page.component.html',
+    styleUrl: './create-update-product-page.component.scss'
 })
 export class CreateUpdateProductPageComponent implements OnInit {
 

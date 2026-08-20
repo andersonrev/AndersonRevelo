@@ -17,11 +17,10 @@ type fieldFormErrorMessages = {
 }
 
 @Component({
-  selector: 'app-form-product',
-  standalone: true,
-  imports: [ReactiveFormsModule, NgClass, NgStyle],
-  templateUrl: './form-product.component.html',
-  styleUrl: './form-product.component.scss'
+    selector: 'app-form-product',
+    imports: [ReactiveFormsModule, NgClass, NgStyle],
+    templateUrl: './form-product.component.html',
+    styleUrl: './form-product.component.scss'
 })
 export class FormProductComponent implements OnInit {
   form!: FormGroup;

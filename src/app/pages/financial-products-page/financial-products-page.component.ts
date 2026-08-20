@@ -11,12 +11,11 @@ import { NotificationsToastService } from '../../services/notifications/notifica
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-financial-products-page',
-  standalone: true,
-  imports: [FormsModule, TableProductsComponent, AsyncPipe, FooterTableComponent],
-  templateUrl: './financial-products-page.component.html',
-  styleUrl: './financial-products-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-financial-products-page',
+    imports: [FormsModule, TableProductsComponent, AsyncPipe, FooterTableComponent],
+    templateUrl: './financial-products-page.component.html',
+    styleUrl: './financial-products-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialProductsPageComponent implements OnInit {
 

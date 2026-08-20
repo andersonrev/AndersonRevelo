@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-footer-table',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './footer-table.component.html',
-  styleUrl: './footer-table.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-footer-table',
+    imports: [FormsModule],
+    templateUrl: './footer-table.component.html',
+    styleUrl: './footer-table.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterTableComponent {
 

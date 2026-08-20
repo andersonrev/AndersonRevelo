@@ -5,11 +5,10 @@ import { DropdownCustomComponent } from '../../shared/dropdown-custom/dropdown-c
 import { SafeImagePipe } from '../../pipes/safe-image.pipe';
 
 @Component({
-  selector: 'app-table-products',
-  standalone: true,
-  imports: [CommonModule, DropdownCustomComponent, DatePipe, SafeImagePipe],
-  templateUrl: './table-products.component.html',
-  styleUrl: './table-products.component.scss'
+    selector: 'app-table-products',
+    imports: [CommonModule, DropdownCustomComponent, DatePipe, SafeImagePipe],
+    templateUrl: './table-products.component.html',
+    styleUrl: './table-products.component.scss'
 })
 export class TableProductsComponent {
 
