@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { Injectable, signal, Signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { ProductInterface } from '../../interfaces/product.interface';
-import { BehaviorSubject, Observable, map, shareReplay, tap } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 import { ResponseCreateProductInterface, ResponseUpdateProductInterface } from '../../interfaces/response-create-product.interface';
 
 
@@ -13,7 +13,7 @@ type respProducto = { data: ProductInterface[] }
 })
 export class ProductHttpService {
 
-  private productsStore: ProductInterface[] = [];
+  private productsStore = signal<ProductInterface[]>([]);
 
   private urlBackendProducts = environment.URL_BACKEND + '/bp/products';
 
@@ -21,15 +21,15 @@ export class ProductHttpService {
   }
 
   getProductsStore() {
-    return this.productsStore;
+    return this.productsStore();
   }
 
   removeProductoFromStore(id: string): void {
-    this.productsStore = this.productsStore.filter(itemProd => itemProd.id !== id)
+    this.productsStore.update((p) => p.filter(itemProd => itemProd.id !== id))
   }
 
   setProductsStore(products: ProductInterface[]){
-    this.productsStore = products;
+    this.productsStore.set(products);
   }
 
   getProducts(): Observable<ProductInterface[]> {
@@ -37,7 +37,7 @@ export class ProductHttpService {
       map(
         (resp: respProducto) => resp.data
       ),
-      tap((products) => this.productsStore = products));
+      tap((products) => this.productsStore.set(products)));
   }
 
   createProduct(newProduct: ProductInterface) {

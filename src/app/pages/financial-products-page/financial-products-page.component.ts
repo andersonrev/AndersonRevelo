@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
@@ -24,19 +24,35 @@ export class FinancialProductsPageComponent implements OnInit {
   private notificationService =inject(NotificationsToastService);
 
 
-  productsToDisplay = signal<ProductInterface[]>([]);
+  filteredProducts = computed<ProductInterface[]>(() => {
+    const products = this.productoHttpService.getProductsStore()
+    const search = this.searchTerm().trim().toLowerCase()
+
+    if(!search) {
+      return products
+    }
+
+    return products.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm())
+      );
+  });
+
+  totalRecords = computed(() => {
+    return this.filteredProducts().length
+  })
 
   
 
-  search = '';
+  searchTerm = signal('');
+  pageSize = signal(10);
+  currentPage = signal(1);
   // TODO: transformar a linkedsignal en futuras versiones
   totalProductsByFilter = signal<number>(0);
 
 
   totalPages = 1;
-  currentPage = 1;
 
-  AMOUNT_RECORD_TO_SHOW = 5;
+  numberRecordsDisplayPage = 5;
 
 
   productoToDelete!: ProductInterface;
@@ -48,9 +64,9 @@ export class FinancialProductsPageComponent implements OnInit {
   getProducts(): void {
     this.productoHttpService.getProducts().subscribe({
       next: (products) => {
-        this.productsToDisplay.set(products.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+        // this.filteredProducts.set(products.slice(0, this.numberRecordsDisplayPage));
         this.totalProductsByFilter.set(products.length);
-        this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW)
+        this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage)
       },
       error: (e) => {
         // toast
@@ -83,37 +99,38 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   removeItemFromTable(id: string){
-    const newProducts = this.productsToDisplay().filter( itemProd => itemProd.id != id);
+    const newProducts = this.filteredProducts().filter( itemProd => itemProd.id != id);
     this.productoHttpService.removeProductoFromStore(id);
 
     this.totalProductsByFilter.update( t => t--);
-    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW);
+    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
 
-    if(newProducts.length === 0 && this.currentPage > 1){
-      this.currentPage--;
-      this.showPreviousAmount(this.AMOUNT_RECORD_TO_SHOW);
-      // emitir nuevamente
-    }else {
-      this.productsToDisplay.set(newProducts);
-    }
+    // if(newProducts.length === 0 && this.currentPage > 1){
+
+      // this.currentPage()--;
+      // this.showPreviousAmount(this.numberRecordsDisplayPage);
+    //   // emitir nuevamente
+    // }else {
+    //   this.productsToDisplay.set(newProducts);
+    // }
 
   }
 
   searchInTable(): void {
-    if (this.search) {
+    if (this.searchTerm) {
       const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
-        product.name.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
+        product.name.toLocaleLowerCase().includes(this.searchTerm().toLocaleLowerCase())
       );
-      this.productsToDisplay.set(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      // this.filteredProducts.set(productosFiltered.slice(0, this.numberRecordsDisplayPage));
       this.totalProductsByFilter.set(productosFiltered.length);
 
     } else {
-      this.productsToDisplay.set(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
+      // this.filteredProducts.set(this.productoHttpService.getProductsStore().slice(0, this.numberRecordsDisplayPage));
       this.totalProductsByFilter.set(this.productoHttpService.getProductsStore().length);
     }
 
-    this.currentPage = 1;
-    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.AMOUNT_RECORD_TO_SHOW);
+    // this.currentPage = 1;
+    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
 
   }
 
@@ -122,11 +139,11 @@ export class FinancialProductsPageComponent implements OnInit {
     // si el amount es mayor al numero de registros no hacer nada
     // casoo contrario
     // mostrar solo el numero de registros de amount
-    this.AMOUNT_RECORD_TO_SHOW = amount;
+    this.numberRecordsDisplayPage = amount;
     if (amount <= this.totalProductsByFilter()) {
       const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
-      this.productsToDisplay.set(amountOfProductsShow);
-      this.currentPage = 1;
+      // this.filteredProducts.set(amountOfProductsShow);
+      // this.currentPage = 1;
       this.totalPages = Math.ceil(this.totalProductsByFilter() / amount);
     }
 
@@ -141,30 +158,30 @@ export class FinancialProductsPageComponent implements OnInit {
     // tambien tengo que saber en que pagina estoy para segun eso hacer el slice
     // 
 
-    if (this.currentPage < this.totalPages && this.currentPage !== this.totalPages) {
+    // if (this.currentPage < this.totalPages && this.currentPage !== this.totalPages) {
 
-      const productsToShow = this.productoHttpService.getProductsStore().slice(this.currentPage * amount, this.currentPage * amount + amount);
+    //   const productsToShow = this.productoHttpService.getProductsStore().slice(this.currentPage * amount, this.currentPage * amount + amount);
 
-      this.productsToDisplay.set(productsToShow);
+    //   this.productsToDisplay.set(productsToShow);
 
-      this.currentPage++;
+    //   this.currentPage++;
 
-    }
+    // }
 
   }
   showPreviousAmount(amount: number): void {
     // que pasa cuando tenga 2 elementos de 5 que quiero mostrar => estoy en la ultima pagina
 
-    if (this.currentPage <= this.totalPages && this.currentPage !== 1) {
+    // if (this.currentPage <= this.totalPages && this.currentPage !== 1) {
 
-      const indiceFinal = amount * this.currentPage - amount;
-      const indiceInicial = indiceFinal - amount;
-      const productsToShow = this.productoHttpService.getProductsStore().slice(indiceInicial, indiceFinal);
-      this.productsToDisplay.set(productsToShow);
+    //   const indiceFinal = amount * this.currentPage - amount;
+    //   const indiceInicial = indiceFinal - amount;
+    //   const productsToShow = this.productoHttpService.getProductsStore().slice(indiceInicial, indiceFinal);
+    //   this.productsToDisplay.set(productsToShow);
 
-      this.currentPage--;
+    //   this.currentPage--;
 
-    }
+    // }
 
   }
 
