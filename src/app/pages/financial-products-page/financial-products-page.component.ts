@@ -44,15 +44,30 @@ export class FinancialProductsPageComponent implements OnInit {
   
 
   searchTerm = signal('');
-  pageSize = signal(10);
+  pageSize = signal(5);
   currentPage = signal(1);
-  // TODO: transformar a linkedsignal en futuras versiones
-  totalProductsByFilter = signal<number>(0);
+
+  totalPages = computed(() => {
+      const products = this.filteredProducts().length;
+      return  Math.ceil(products / this.pageSize());
+  });
 
 
-  totalPages = 1;
+  paginatedProducts = computed(() => {
+    const products = this.filteredProducts()
+    const size = this.pageSize()
+    const page = this.currentPage()
 
-  numberRecordsDisplayPage = 5;
+    return products.slice((page - 1) * size , page * size)
+  })
+
+
+
+  // totalProductsByFilter = signal<number>(0);
+
+
+
+  // numberRecordsDisplayPage = 5;
 
 
   productoToDelete!: ProductInterface;
@@ -65,8 +80,8 @@ export class FinancialProductsPageComponent implements OnInit {
     this.productoHttpService.getProducts().subscribe({
       next: (products) => {
         // this.filteredProducts.set(products.slice(0, this.numberRecordsDisplayPage));
-        this.totalProductsByFilter.set(products.length);
-        this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage)
+        // this.totalProductsByFilter.set(products.length);
+        // this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage)
       },
       error: (e) => {
         // toast
@@ -102,8 +117,8 @@ export class FinancialProductsPageComponent implements OnInit {
     const newProducts = this.filteredProducts().filter( itemProd => itemProd.id != id);
     this.productoHttpService.removeProductoFromStore(id);
 
-    this.totalProductsByFilter.update( t => t--);
-    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
+    // this.totalProductsByFilter.update( t => t--);
+    // this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
 
     // if(newProducts.length === 0 && this.currentPage > 1){
 
@@ -122,34 +137,36 @@ export class FinancialProductsPageComponent implements OnInit {
         product.name.toLocaleLowerCase().includes(this.searchTerm().toLocaleLowerCase())
       );
       // this.filteredProducts.set(productosFiltered.slice(0, this.numberRecordsDisplayPage));
-      this.totalProductsByFilter.set(productosFiltered.length);
+      // this.totalProductsByFilter.set(productosFiltered.length);
 
     } else {
       // this.filteredProducts.set(this.productoHttpService.getProductsStore().slice(0, this.numberRecordsDisplayPage));
-      this.totalProductsByFilter.set(this.productoHttpService.getProductsStore().length);
+      // this.totalProductsByFilter.set(this.productoHttpService.getProductsStore().length);
     }
 
     // this.currentPage = 1;
-    this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
+    // this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);
 
   }
 
 
   showAmountSelected(amount: number): void {
+    this.pageSize.set(amount);
     // si el amount es mayor al numero de registros no hacer nada
     // casoo contrario
     // mostrar solo el numero de registros de amount
-    this.numberRecordsDisplayPage = amount;
-    if (amount <= this.totalProductsByFilter()) {
-      const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
+    // this.numberRecordsDisplayPage = amount;
+    // if (amount <= this.totalProductsByFilter()) {
+      // const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
       // this.filteredProducts.set(amountOfProductsShow);
       // this.currentPage = 1;
-      this.totalPages = Math.ceil(this.totalProductsByFilter() / amount);
-    }
+      // this.totalPages = Math.ceil(this.totalProductsByFilter() / amount);
+    // }
 
   }
 
   showNextAmount(amount: number): void {
+    this.currentPage.update(a => a + 1)
     // tengo el total
     // saber cuantas paginas tengo ?
     // guardar eso en el estado
@@ -170,6 +187,8 @@ export class FinancialProductsPageComponent implements OnInit {
 
   }
   showPreviousAmount(amount: number): void {
+
+    this.currentPage.update(a => a - 1)
     // que pasa cuando tenga 2 elementos de 5 que quiero mostrar => estoy en la ultima pagina
 
     // if (this.currentPage <= this.totalPages && this.currentPage !== 1) {
