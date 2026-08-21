@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, computed, inject, linkedSignal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
@@ -45,11 +45,15 @@ export class FinancialProductsPageComponent implements OnInit {
 
   searchTerm = signal('');
   pageSize = signal(5);
-  currentPage = signal(1);
 
   totalPages = computed(() => {
       const products = this.filteredProducts().length;
       return  Math.ceil(products / this.pageSize());
+  });
+
+  currentPage = linkedSignal({
+    source: this.totalPages,
+    computation: () => 1
   });
 
 
@@ -166,7 +170,12 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   showNextAmount(amount: number): void {
-    this.currentPage.update(a => a + 1)
+
+    console.log({total:this.totalPages(), actual: this.currentPage()})
+
+    if (this.currentPage() < this.totalPages()){
+      this.currentPage.update(a => a + 1)
+    }
     // tengo el total
     // saber cuantas paginas tengo ?
     // guardar eso en el estado
@@ -187,8 +196,11 @@ export class FinancialProductsPageComponent implements OnInit {
 
   }
   showPreviousAmount(amount: number): void {
+    
+    if(this.currentPage() > 1){
+      this.currentPage.update(a => a - 1)
+    }
 
-    this.currentPage.update(a => a - 1)
     // que pasa cuando tenga 2 elementos de 5 que quiero mostrar => estoy en la ultima pagina
 
     // if (this.currentPage <= this.totalPages && this.currentPage !== 1) {
