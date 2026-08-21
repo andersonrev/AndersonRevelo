@@ -105,7 +105,7 @@ export class FinancialProductsPageComponent implements OnInit {
   deleteProduct() {
     // console.log('esto vamos a eliminar', idProduct);
     this.productoHttpService.deleteProduct(this.productoToDelete.id).subscribe({
-      next: (resp) => {
+      next: () => {
         this.notificationService.showToast('success', 'Producto eliminado correctamente')
         this.removeItemFromTable(this.productoToDelete.id);
         this.container.clear();
@@ -118,7 +118,7 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   removeItemFromTable(id: string){
-    const newProducts = this.filteredProducts().filter( itemProd => itemProd.id != id);
+    // const newProducts = this.filteredProducts().filter( itemProd => itemProd.id != id);
     this.productoHttpService.removeProductoFromStore(id);
 
     // this.totalProductsByFilter.update( t => t--);
@@ -136,17 +136,17 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   searchInTable(): void {
-    if (this.searchTerm) {
-      const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
-        product.name.toLocaleLowerCase().includes(this.searchTerm().toLocaleLowerCase())
-      );
+    // if (this.searchTerm) {
+      // const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
+      //   product.name.toLocaleLowerCase().includes(this.searchTerm().toLocaleLowerCase())
+      // );
       // this.filteredProducts.set(productosFiltered.slice(0, this.numberRecordsDisplayPage));
       // this.totalProductsByFilter.set(productosFiltered.length);
 
-    } else {
+    // } else {
       // this.filteredProducts.set(this.productoHttpService.getProductsStore().slice(0, this.numberRecordsDisplayPage));
       // this.totalProductsByFilter.set(this.productoHttpService.getProductsStore().length);
-    }
+    // }
 
     // this.currentPage = 1;
     // this.totalPages = Math.ceil(this.totalProductsByFilter() / this.numberRecordsDisplayPage);

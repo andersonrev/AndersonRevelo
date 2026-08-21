@@ -68,14 +68,14 @@ describe('FinancialProductsPageComponent', () => {
 
   it('should call getProductsStore when there is a value in search', () => {
     const mockGetProducts = spyOn(mockedProductHttpService, 'getProductsStore').and.returnValue(productsMock);
-    component.search = '1';
+    component.searchTerm = '1';
 
     component.searchInTable();
 
     expect(mockGetProducts).toHaveBeenCalled();
     expect(component.currentPage).toEqual(1);
     const totalProductsWithSearh = productsMock.filter(product =>
-      product.name.toLocaleLowerCase().includes(component.search.toLocaleLowerCase()));
+      product.name.toLocaleLowerCase().includes(component.searchTerm.toLocaleLowerCase()));
     expect(component.totalProductsByFilter).toEqual(totalProductsWithSearh.length)
   });
 
