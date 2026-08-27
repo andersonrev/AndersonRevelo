@@ -14,15 +14,22 @@ import { NotificationsToastService } from '../../services/notifications/notifica
     styleUrl: './financial-products-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialProductsPageComponent implements OnInit {
+export class FinancialProductsPageComponent {
 
   @ViewChild('modal') modal!: TemplateRef<any>;
 
-  private productoHttpService = inject(ProductHttpService);
   container = inject(ViewContainerRef)
   private router = inject(Router);
   private notificationService =inject(NotificationsToastService);
+  private productoHttpService = inject(ProductHttpService);
 
+
+
+
+  
+
+  searchTerm = signal('');
+  pageSize = signal(5);
 
   filteredProducts = computed<ProductInterface[]>(() => {
     const products = this.productoHttpService.getProductsStore()
@@ -37,15 +44,6 @@ export class FinancialProductsPageComponent implements OnInit {
       );
   });
 
-  totalRecords = computed(() => {
-    return this.filteredProducts().length
-  })
-
-  
-
-  searchTerm = signal('');
-  pageSize = signal(5);
-
   totalPages = computed(() => {
       const products = this.filteredProducts().length;
       return  Math.ceil(products / this.pageSize());
@@ -55,6 +53,10 @@ export class FinancialProductsPageComponent implements OnInit {
     source: this.totalPages,
     computation: () => 1
   });
+
+  totalRecords = computed(() => {
+    return this.filteredProducts().length
+  })
 
 
   paginatedProducts = computed(() => {
@@ -67,19 +69,6 @@ export class FinancialProductsPageComponent implements OnInit {
 
   productoToDelete!: ProductInterface;
 
-  ngOnInit(): void {
-    this.getProducts();
-  }
-
-  getProducts(): void {
-    this.productoHttpService.getProducts().subscribe({
-      next: (products) => {
-      },
-      error: (e) => {
-        // toast
-      }
-    });
-  }
 
   goToCreateUpdatePage(idProduct?: string): void {
     if (idProduct) {
