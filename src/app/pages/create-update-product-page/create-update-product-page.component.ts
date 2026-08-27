@@ -24,10 +24,7 @@ export class CreateUpdateProductPageComponent implements OnInit {
 
 
   notificationService = inject(NotificationsToastService);
-
-  constructor(private productoHttpService: ProductHttpService) {
-
-  }
+  private productoHttpService = inject(ProductHttpService)
 
   ngOnInit(): void {
     if (this.id) {

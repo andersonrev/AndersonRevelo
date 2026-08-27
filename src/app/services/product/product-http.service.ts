@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { Observable, map, shareReplay, tap } from 'rxjs';
@@ -16,9 +16,8 @@ export class ProductHttpService {
   private productsStore = signal<ProductInterface[]>([]);
 
   private urlBackendProducts = environment.URL_BACKEND + '/bp/products';
+  private http = inject(HttpClient)
 
-  constructor(private http: HttpClient) {
-  }
 
   getProductsStore() {
     return this.productsStore();

@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { DropdownCustomComponent } from '../../shared/dropdown-custom/dropdown-custom.component';
@@ -6,7 +6,7 @@ import { SafeImagePipe } from '../../pipes/safe-image.pipe';
 
 @Component({
     selector: 'app-table-products',
-    imports: [CommonModule, DropdownCustomComponent, DatePipe, SafeImagePipe],
+    imports: [DropdownCustomComponent, DatePipe, SafeImagePipe],
     templateUrl: './table-products.component.html',
     styleUrl: './table-products.component.scss'
 })
