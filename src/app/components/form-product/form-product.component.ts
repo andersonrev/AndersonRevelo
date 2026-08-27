@@ -1,4 +1,4 @@
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription, combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -17,11 +17,10 @@ type fieldFormErrorMessages = {
 }
 
 @Component({
-  selector: 'app-form-product',
-  standalone: true,
-  imports: [ReactiveFormsModule, NgClass, NgStyle],
-  templateUrl: './form-product.component.html',
-  styleUrl: './form-product.component.scss'
+    selector: 'app-form-product',
+    imports: [ReactiveFormsModule, NgClass],
+    templateUrl: './form-product.component.html',
+    styleUrl: './form-product.component.scss'
 })
 export class FormProductComponent implements OnInit {
   form!: FormGroup;

@@ -1,11 +1,10 @@
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-dropdown-custom',
-  standalone: true,
-  imports: [],
-  templateUrl: './dropdown-custom.component.html',
-  styleUrl: './dropdown-custom.component.scss'
+    selector: 'app-dropdown-custom',
+    imports: [],
+    templateUrl: './dropdown-custom.component.html',
+    styleUrl: './dropdown-custom.component.scss'
 })
 export class DropdownCustomComponent {
 

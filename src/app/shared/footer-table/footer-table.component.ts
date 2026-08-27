@@ -1,26 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-footer-table',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './footer-table.component.html',
-  styleUrl: './footer-table.component.scss'
+    selector: 'app-footer-table',
+    imports: [FormsModule],
+    templateUrl: './footer-table.component.html',
+    styleUrl: './footer-table.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterTableComponent {
 
-  @Input()
-  totalRecords = 0;
+  totalRecords = input(0);
 
-  @Output()
-  eventAmount = new EventEmitter<number>();
+  eventAmount = output<number>();
 
-  @Output()
-  eventNext = new EventEmitter<number>();
+  eventNext = output<number>();
 
-  @Output()
-  eventPrevious = new EventEmitter<number>();
+  eventPrevious = output<number>();
 
   amountToShow = '5';
 

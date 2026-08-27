@@ -1,21 +1,18 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef, computed, inject, linkedSignal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
 import { ProductInterface } from '../../interfaces/product.interface';
 import { ProductHttpService } from '../../services/product/product-http.service';
 import { FooterTableComponent } from '../../shared/footer-table/footer-table.component';
 import { NotificationsToastService } from '../../services/notifications/notifications-toast.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-financial-products-page',
-  standalone: true,
-  imports: [FormsModule, TableProductsComponent, AsyncPipe, FooterTableComponent],
-  templateUrl: './financial-products-page.component.html',
-  styleUrl: './financial-products-page.component.scss'
+    selector: 'app-financial-products-page',
+    imports: [FormsModule, TableProductsComponent, FooterTableComponent],
+    templateUrl: './financial-products-page.component.html',
+    styleUrl: './financial-products-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialProductsPageComponent implements OnInit {
 
@@ -27,19 +24,46 @@ export class FinancialProductsPageComponent implements OnInit {
   private notificationService =inject(NotificationsToastService);
 
 
-  products$ = new BehaviorSubject<ProductInterface[]>([]);
+  filteredProducts = computed<ProductInterface[]>(() => {
+    const products = this.productoHttpService.getProductsStore()
+    const search = this.searchTerm().trim().toLowerCase()
+
+    if(!search) {
+      return products
+    }
+
+    return products.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm())
+      );
+  });
+
+  totalRecords = computed(() => {
+    return this.filteredProducts().length
+  })
 
   
 
-  search = '';
-  totalProducts = 0;
+  searchTerm = signal('');
+  pageSize = signal(5);
+
+  totalPages = computed(() => {
+      const products = this.filteredProducts().length;
+      return  Math.ceil(products / this.pageSize());
+  });
+
+  currentPage = linkedSignal({
+    source: this.totalPages,
+    computation: () => 1
+  });
 
 
-  totalPages = 1;
-  currentPage = 1;
+  paginatedProducts = computed(() => {
+    const products = this.filteredProducts()
+    const size = this.pageSize()
+    const page = this.currentPage()
 
-  AMOUNT_RECORD_TO_SHOW = 5;
-
+    return products.slice((page - 1) * size , page * size)
+  })
 
   productoToDelete!: ProductInterface;
 
@@ -50,9 +74,6 @@ export class FinancialProductsPageComponent implements OnInit {
   getProducts(): void {
     this.productoHttpService.getProducts().subscribe({
       next: (products) => {
-        this.products$.next(products.slice(0, this.AMOUNT_RECORD_TO_SHOW));
-        this.totalProducts = products.length;
-        this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW)
       },
       error: (e) => {
         // toast
@@ -70,9 +91,8 @@ export class FinancialProductsPageComponent implements OnInit {
 
 
   deleteProduct() {
-    // console.log('esto vamos a eliminar', idProduct);
     this.productoHttpService.deleteProduct(this.productoToDelete.id).subscribe({
-      next: (resp) => {
+      next: () => {
         this.notificationService.showToast('success', 'Producto eliminado correctamente')
         this.removeItemFromTable(this.productoToDelete.id);
         this.container.clear();
@@ -85,89 +105,27 @@ export class FinancialProductsPageComponent implements OnInit {
   }
 
   removeItemFromTable(id: string){
-    const newProducts = this.products$.getValue().filter( itemProd => itemProd.id != id);
     this.productoHttpService.removeProductoFromStore(id);
-
-    this.totalProducts--;
-    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
-
-    if(newProducts.length === 0 && this.currentPage > 1){
-      this.currentPage--;
-      this.showPreviousAmount(this.AMOUNT_RECORD_TO_SHOW);
-      // emitir nuevamente
-    }else {
-      this.products$.next(newProducts);
-    }
-
   }
 
-  searchInTable(): void {
-    if (this.search) {
-      const productosFiltered = this.productoHttpService.getProductsStore().filter(product =>
-        product.name.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
-      );
-      this.products$.next(productosFiltered.slice(0, this.AMOUNT_RECORD_TO_SHOW));
-      this.totalProducts = productosFiltered.length;
-
-    } else {
-      this.products$.next(this.productoHttpService.getProductsStore().slice(0, this.AMOUNT_RECORD_TO_SHOW));
-      this.totalProducts = this.productoHttpService.getProductsStore().length;
-    }
-
-    this.currentPage = 1;
-    this.totalPages = Math.ceil(this.totalProducts / this.AMOUNT_RECORD_TO_SHOW);
-
-  }
 
 
   showAmountSelected(amount: number): void {
-    // si el amount es mayor al numero de registros no hacer nada
-    // casoo contrario
-    // mostrar solo el numero de registros de amount
-    this.AMOUNT_RECORD_TO_SHOW = amount;
-    if (amount <= this.totalProducts) {
-      const amountOfProductsShow = this.productoHttpService.getProductsStore().slice(0, amount);
-      this.products$.next(amountOfProductsShow);
-      this.currentPage = 1;
-      this.totalPages = Math.ceil(this.totalProducts / amount);
-    }
-
+    this.pageSize.set(amount);
   }
 
   showNextAmount(amount: number): void {
-    // tengo el total
-    // saber cuantas paginas tengo ?
-    // guardar eso en el estado
-    // paginas 3 seleccion 5 ->   quiere decir que tengo 15 elementos
-    // y si tengo 12 y quiero mostrar de 5 en 5 12 / 5 = fucnoin techo 
-    // tambien tengo que saber en que pagina estoy para segun eso hacer el slice
-    // 
 
-    if (this.currentPage < this.totalPages && this.currentPage !== this.totalPages) {
 
-      const productsToShow = this.productoHttpService.getProductsStore().slice(this.currentPage * amount, this.currentPage * amount + amount);
-
-      this.products$.next(productsToShow);
-
-      this.currentPage++;
-
+    if (this.currentPage() < this.totalPages()){
+      this.currentPage.update(a => a + 1)
     }
-
   }
   showPreviousAmount(amount: number): void {
-    // que pasa cuando tenga 2 elementos de 5 que quiero mostrar => estoy en la ultima pagina
-
-    if (this.currentPage <= this.totalPages && this.currentPage !== 1) {
-
-      const indiceFinal = amount * this.currentPage - amount;
-      const indiceInicial = indiceFinal - amount;
-      const productsToShow = this.productoHttpService.getProductsStore().slice(indiceInicial, indiceFinal);
-      this.products$.next(productsToShow);
-
-      this.currentPage--;
-
+    
+    if(this.currentPage() > 1){
+      this.currentPage.update(a => a - 1)
     }
-
   }
 
   showDeleteModal(product: ProductInterface) {
